@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<title>Mazey wallet</title>
+	<meta name="description" content="Mazey, Bitcoin Cash, CashTokens, mini wallet">
+  	<meta name="web" content="https://mazetoken.github.io/mazey/">
+	<style>
+		body {
+			text-align: center;
+			max-width: 768px;
+			margin: auto;
+			font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+			background-color: black;
+			font-size: large;
+			color: whitesmoke;
+		}
+		p {
+			font-size: small;
+		}
+		a:link {
+			color: #0AC18E;
+			background-color: transparent;
+			text-decoration: none;
+		}
+		a:visited {
+			color: #0AC18E;
+			background-color: transparent;
+			text-decoration: none;
+		}
+		.collapsible {
+			background-color: #0AC18E;
+			font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+			color: white;
+			cursor: pointer;
+			padding: 18px;
+			width: 50%;
+			border: none;
+			text-align: center;
+			outline: none;
+			font-size: 14px;
+		}
+		.active, .collapsible:hover {
+			background-color: #0AC18E;
+		}
+		.content {
+			padding: 0 18px;
+			display: none;
+			overflow: hidden;
+			background-color: black;
+		}
+		@media screen and (max-width: 512px) {
+		}
+	</style>
+	<script defer src="https://cdn.jsdelivr.net/npm/mainnet-js@1.1.28/dist/mainnet-1.1.28.js" integrity="sha256-yD2J1VmKhezuIifyqmzigc3VTOMnT9odovVsf8DjX+c=" crossorigin="anonymous"></script>
+</head>
+<body>
+	<div>
+		<h1>Mazey</h1>
+		<h3>Bitcoin Cash CashTokens mini wallet*</h3>
+		<p><i>*experimental</i></p>
+		<br>
+		<p>It can be used locally, on a pendrive, SD card, floppy disk, etc.</p>
+		<p>This is a client-side wallet. It is stored in indexedDB on your device.</p>
+		<p>Save your seed phrase and private key!</p>
+		<p>
+			If the browser closes and reopens, reload the wallet from the browser cache.<br>
+			If the browser cache is cleared, import the wallet from the seed phrase.
+		</p>
+		<p>Use it at your own risk and with small amount of BCH.<br>
+			There is no guarantee that it will work if you modify the code.<br>
+			Clear browser's cache (ctrl+shift+delete) if you're using the wallet on someone else's device.
+		</p>
+		<p>Viewing and sending NFT CashTokens is not fully implemented.<br>
+			Refresh the page and reload the wallet to update balances.
+		</p>
+		<br>
+		<hr>
+		<div>
+			<button type="button" class="collapsible">Create or reload wallet</button>
+			<div class="content">
+				<p><button id="create">Create / reload wallet</button></p>
+				<p id="cashtokensaddress1"></p>
+				<p id="tokens1"></p>
+				<p id="nfts1"></p>
+				<p id="bchaddress1"></p>
+				<p id="bchbalance1"></p>
+				<p id="mnemonic1"></p>
+				<p id="derivation1"></p>
+				<p id="privatekey1"></p>
+			</div>
+		</div>
+		<hr>
+		<div>
+			<button type="button" class="collapsible">Import wallet from seed phrase</button>
+			<div class="content">
+				<br>
+				<input id="importSeedPhrase" type="text" size="56" placeholder="seed phrase">
+				<br>
+				<p><button type="button" id="import">Import</button></p>
+				<p id="cashtokensaddress2"></p>
+				<p id="tokens2"></p>
+				<p id="nfts2"></p>
+				<p id="bchaddress2"></p>
+				<p id="bchbalance2"></p>
+				<p id="mnemonic2"></p>
+				<p id="derivation2"></p>
+				<p id="privatekey2"></p>
+			</div>
+		</div>
+		<hr>
+		<div>
+			<button type="button" class="collapsible">View tokens</button>
+			<div class="content">
+				<p>Choose metadata registry from the list.<br>
+					If custom BCMR is selected, paste url in the input field.
+				</p>
+				<select id="bcmrList">
+					<option value="https://mazetoken.github.io/.well-known/bitcoin-cash-metadata-registry.json">Maze Token MTU BCMR</option>
+					<option value="https://otr.cash/.well-known/bitcoin-cash-metadata-registry.json">Open Token Registry BCMR</option>
+					<option value="">custom BCMR</option>
+				</select>
+				<br>
+				<input id="bcmrCustom" type="text" size="56" placeholder="custom BCMR">
+				<br><br>
+				<input id="viewTokenId" type="text" size="56" placeholder="tokenId">
+				<br>
+				<p><button type="button" id="viewTokens">View</button></p>
+				<p id="tokencategory3"></p>
+				<p id="tokenname3"></p>
+				<p id="tokensymbol3"></p>
+				<p id="tokendecimals3"></p>
+				<p id="tokendescription3"></p>
+				<img src id="tokenicon3" width="200"></p>
+			
+				<p>on-chain BCMR</p>
+				<input id="viewTokenId1" type="text" size="56" placeholder="tokenId">
+				<br>
+				<p><button type="button" id="viewTokens1">View</button></p>
+				<p><i>Wait a few seconds</i></p>
+				<p id="tokencategory4"></p>
+				<p id="tokenname4"></p>
+				<p id="tokensymbol4"></p>
+				<p id="tokendecimals4"></p>
+				<p id="tokendescription4"></p>
+				<img src id="tokenicon4" width="200"></p>
+			</div>
+		</div>
+		<hr>
+		<div>
+			<button type="button" class="collapsible">Send BCH</button>
+			<div class="content">
+				<br>
+				<input id="sendAddr" type="text" size="56" placeholder="bitcoincash:q... or bitcoincash:z...">
+				<br>
+				<input id="sendAmount" type="text" size="56" placeholder="amount in satoshis">
+				<br>
+				<p><button id="sendBCH">Send BCH</button></p>
+				<p id="bchsent"></p>
+			</div>
+		</div>
+		<hr>
+		<div>
+			<button type="button" class="collapsible">Send fungible CashTokens</button>
+			<div class="content">
+				<br>
+				<input id="sendAddrToken" type="text" size="56" placeholder="bitcoincash:z...">
+				<br>
+				<input id="sendTokenId" type="text" size="56" placeholder="tokenId">
+				<br>
+				<input id="sendAmountToken" type="text" size="56" placeholder="amount with decimal places">
+				<br>
+				<p><button id="sendTokens">Send tokens</button></p>
+				<p id="ftsent"></p>
+			</div>
+		</div>
+		<hr>
+		<div>
+			<button type="button" class="collapsible">Send NFT CashTokens</button>
+			<div class="content">
+				<br>
+				<input id="sendAddrToken1" type="text" size="56" placeholder="bitcoincash:z...">
+				<br>
+				<input id="sendNftTokenId" type="text" size="56" placeholder="tokenId">
+				<br>
+				<input id="nftCommitment" type="text" size="56" placeholder="NFT commitment">
+				<br>
+				<p><button id="sendNfts">Send NFTs</button></p>
+				<p id="nftsent"></p>
+			</div>
+		</div>
+		<hr>
+		<div>
+			<button type="button" class="collapsible">Payment request (BCH only)</button>
+			<div class="content">
+				<br>
+				<input id="address" type="text" size="56" placeholder="address e.g. bitcoincash:qzud8n6jjjukefrswrqlvwwk8l6wv7435yg56xw20s">
+				<br>
+				<input id="amount" type="text" size="56" placeholder="amount e.g. 0.0001">
+				<br>
+				<input id="label" type="text" size="56" placeholder="some text">
+				<br>
+				<p><button id="createPaymentRequest">Create payment url</button></p>
+				<p id="payurl"></p>
+			</div>
+		</div>
+		<hr>
+		<br>
+		<footer>
+			<p>Claim <a href="https://microfi.onrender.com">Microfi Free Flow (XMI)</a> for free</p>
+			<p><a href="https://github.com/mazetoken/mazey/">Mazey</a>, 2023</p>
+			<p>Powered by <a href="https://mainnet.cash">mainnet-js</a></p>
+			<p>Inspired by <a href="https://cashonize.com">Cashonize</a> wallet</p>
+		</footer>
+		<br>
+	</div>
+
+	<script>
+		var coll = document.getElementsByClassName("collapsible");
+		var i;
+		for (i = 0; i < coll.length; i++) {
+		  coll[i].addEventListener("click", function() {
+			this.classList.toggle("active");
+			var content = this.nextElementSibling;
+			if (content.style.display === "block") {
+			  content.style.display = "none";
+			} else {
+			  content.style.display = "block";
+			}
+		  });
+		}
+	</script>
+
+	<script>
+	document.addEventListener("DOMContentLoaded", async (event) => {
+		Object.assign(globalThis, await __mainnetPromise);
+
+		let db;
+		const request = indexedDB.open("MazeyIndexedDB");
+		request.onerror = (event) => {
+		console.error("Why didn't you allow Mazey to use IndexedDB?");
+		};
+		request.onsuccess = (event) => {
+		db = event.target.result;
+		console.log("Mazey IndexedDB has been successfully initialized.");
+		};
+
+		Config.DefaultParentDerivationPath = "m/44'/145'/0'/0/0";
+		Config.EnforceCashTokenReceiptAddresses = true;
+
+		document.getElementById("create").onclick = async () => {
+			const wallet1 = await Wallet.named("mazey");
+			const seed1 = await wallet1.mnemonic;
+			const derivationPath = "m/44'/145'/0'/0/0";
+			const walletId = `seed:mainnet:${seed1}:${derivationPath}`;
+			const wallet = await Wallet.replaceNamed("mazey", walletId);
+			const tokenAddress = await wallet.getTokenDepositAddress();
+			const tokensAddressBalance = await wallet.getAllTokenBalances();
+			wallet.watchBalance(async (newTokensBalance) => {
+			tokensAddressBalance = newTokensBalance;
+			});
+			const nftsAddressBalance = await wallet.getAllNftTokenBalances();
+			wallet.watchBalance(async (newNftsBalance) => {
+			nftsAddressBalance = newNftsBalance;
+			});
+			const bchAddress = await wallet.getDepositAddress();
+			const bchBalance = await wallet.getBalance();
+			wallet.watchBalance(async (newBchBalance) => {
+			bchBalance = newBchBalance;
+			});
+			document.getElementById("cashtokensaddress1").textContent = "CashTokens address: " + tokenAddress;
+			document.getElementById("tokens1").textContent = "Tokens: " + JSON.stringify(tokensAddressBalance, null, '\t');
+			document.getElementById("nfts1").textContent = "NFTs: " + JSON.stringify(nftsAddressBalance, null, '\t');
+			document.getElementById("bchaddress1").textContent = "BCH address: " + bchAddress;
+			document.getElementById("bchbalance1").textContent = "BCH balance: " + JSON.stringify(bchBalance);
+			document.getElementById("mnemonic1").textContent = "Seed phrase: " + wallet.mnemonic;
+			document.getElementById("derivation1").textContent = "Derivation path: " + wallet.derivationPath;
+			document.getElementById("privatekey1").textContent ="Private key: " + wallet.privateKeyWif;
+		};
+
+		document.getElementById("import").onclick = async () => {
+			const seed2 = document.querySelector("#importSeedPhrase").value;
+			const derivationPath = "m/44'/145'/0'/0/0";
+			const walletId1 = `seed:mainnet:${seed2}:${derivationPath}`;
+			var wallet = await Wallet.replaceNamed("mazey", walletId1);
+			const tokenAddress = await wallet.getTokenDepositAddress();
+			const tokensAddressBalance = await wallet.getAllTokenBalances();
+			wallet.watchBalance(async (newTokensBalance) => {
+			tokensAddressBalance = newTokensBalance;
+			});
+			const nftsAddressBalance = await wallet.getAllNftTokenBalances();
+			wallet.watchBalance(async (newNftsBalance) => {
+			nftsAddressBalance = newNftsBalance;
+			});
+			const bchAddress = await wallet.getDepositAddress();
+			const bchBalance = await wallet.getBalance();
+			wallet.watchBalance(async (newBalance) => {
+			bchBalance = newBalance;
+			});
+			document.getElementById("cashtokensaddress2").textContent = "CashTokens address: " + tokenAddress;
+			document.getElementById("tokens2").textContent = "Tokens: " + JSON.stringify(tokensAddressBalance, null, '\t');
+			document.getElementById("nfts2").textContent = "NFTs: " + JSON.stringify(nftsAddressBalance, null, '\t');
+			document.getElementById("bchaddress2").textContent = "BCH address: " + bchAddress;
+			document.getElementById("bchbalance2").textContent = "BCH balance: " + JSON.stringify(bchBalance);
+			document.getElementById("mnemonic2").textContent = "Seed phrase: " + wallet.mnemonic;
+			document.getElementById("derivation2").textContent = "Derivation path: " + wallet.derivationPath;
+			document.getElementById("privatekey2").textContent ="Private key: " + wallet.privateKeyWif;
+		};
+
+		document.getElementById("viewTokens").onclick = async () => {
+			const bcmrList = document.querySelector("#bcmrList").value;
+			const bcmrCustom = document.querySelector("#bcmrCustom").value;
+			if (bcmrUrl = bcmrList) {
+			await BCMR.addMetadataRegistryFromUri(bcmrList);
+			} else if (bcmrUrl = bcmrCustom) {
+			await BCMR.addMetadataRegistryFromUri(bcmrCustom);
+			}
+			const viewTokenId = document.querySelector("#viewTokenId").value;
+			const tokenInfo = BCMR.getTokenInfo(viewTokenId);
+			document.getElementById("tokencategory3").textContent = "Category/tokenId: " + tokenInfo.token.category;
+			document.getElementById("tokenname3").textContent = "Name: " + tokenInfo.name;
+			document.getElementById("tokensymbol3").textContent = "Symbol: " + tokenInfo.token.symbol;
+			document.getElementById("tokendecimals3").textContent = "Decimals: " + tokenInfo.token.decimals;
+			document.getElementById("tokendescription3").textContent = "Description: " + tokenInfo.description;
+			document.getElementById("tokenicon3").src = tokenInfo.uris.icon;
+		};
+
+		document.getElementById("viewTokens1").onclick = async () => {
+			const viewTokenId1 = document.querySelector("#viewTokenId1").value;
+			const authChain = await BCMR.buildAuthChain({
+				transactionHash: viewTokenId1,
+				followToHead: true
+			});
+			if (authChain[0]) {
+			try {
+				await BCMR.addMetadataRegistryFromUri(authChain[0].httpsUrl);
+			} catch (error) { alert(error) }
+			}
+			const tokenInfo = BCMR.getTokenInfo(viewTokenId1);
+			document.getElementById("tokencategory4").textContent = "Category/tokenId: " + tokenInfo.token.category;
+			document.getElementById("tokenname4").textContent = "Name: " + tokenInfo.name;
+			document.getElementById("tokensymbol4").textContent = "Symbol: " + tokenInfo.token.symbol;
+			document.getElementById("tokendecimals4").textContent = "Decimals: " + tokenInfo.token.decimals;
+			document.getElementById("tokendescription4").textContent = "Description: " + tokenInfo.description;
+			document.getElementById("tokenicon4").src = tokenInfo.uris.icon;
+		};
+
+		document.getElementById("sendBCH").onclick = async () => {
+			try {
+			const bchAddress = document.querySelector("#sendAddr").value;
+			const bchAmount = document.querySelector("#sendAmount").value;
+			const wallet = await Wallet.named("mazey");
+			const { txId } = await wallet.send([
+				{
+				cashaddr: bchAddress,
+				value: bchAmount,
+				unit: "sat"
+				}
+			]);
+			document.getElementById("bchsent").textContent = "TxId: " + txId;
+			} catch (error) { alert(error) }
+		};
+
+		document.getElementById("sendTokens").onclick = async () => {
+			try {
+			const tokenAddress = document.querySelector("#sendAddrToken").value;
+			const tokenAmount = document.querySelector("#sendAmountToken").value;
+			const token = document.querySelector("#sendTokenId").value;
+			const wallet = await Wallet.named("mazey");
+			const { txId } = await wallet.send([new TokenSendRequest(
+				{
+				cashaddr: tokenAddress,
+				amount: tokenAmount,
+				tokenId: token
+				}
+			)]);
+			document.getElementById("ftsent").textContent = "TxId: " + txId;
+			} catch (error) { alert(error) }
+		};
+
+		document.getElementById("sendNfts").onclick = async () => {
+			try {
+			const tokenAddress = document.querySelector("#sendAddrToken1").value;
+			const token1 = document.querySelector("#sendNftTokenId").value;
+			const nftCommitment = document.querySelector("#nftCommitment").value;
+			const wallet = await Wallet.named("mazey");
+			const { txId } = await wallet.send([new TokenSendRequest(
+				{
+				cashaddr: tokenAddress,
+				tokenId: token1,
+				commitment: nftCommitment,
+				capability: NFTCapability.none
+				}
+			)]);
+			document.getElementById("nftsent").textContent = "TxId: " + txId;
+			} catch (error) { alert(error) }
+		};
+	});
+	</script>
+
+	<script>
+		document.getElementById("createPaymentRequest").onclick = async () => {
+		const pAddress = document.querySelector("#address").value;
+		const pAmount = document.querySelector("#amount").value;
+		const pLabel = document.querySelector("#label").value;
+		const pUrl = pAddress + "?amount=" + pAmount + "&label=" + pLabel;">";
+		document.getElementById("payurl").textContent = pUrl;
+		location.href = pUrl;
+		};
+	</script>
+</body>
+</html>
