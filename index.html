@@ -31,6 +31,7 @@
 		}
 		.collapsible {
 			background-color: #0AC18E;
+			border-radius: 12px;
 			font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 			color: white;
 			cursor: pointer;
@@ -45,7 +46,7 @@
 			background-color: #0AC18E;
 		}
 		.content {
-			padding: 0 18px;
+			padding: 0 16px;
 			display: none;
 			overflow: hidden;
 			background-color: black;
@@ -53,16 +54,13 @@
 		@media screen and (max-width: 512px) {
 		}
 	</style>
-	<script defer src="https://cdn.jsdelivr.net/npm/mainnet-js@1.1.28/dist/mainnet-1.1.28.js" integrity="sha256-yD2J1VmKhezuIifyqmzigc3VTOMnT9odovVsf8DjX+c=" crossorigin="anonymous"></script>
+	<script defer src="https://cdn.jsdelivr.net/npm/mainnet-js@1.1.29/dist/mainnet-1.1.29.js" integrity="sha256-t6hPP2i0+RonFDld6iIl5fx9w2CYAHkIDQi+UzmGM7M=" crossorigin="anonymous"></script>
 </head>
 <body>
 	<div>
 		<h1>Mazey</h1>
-		<h3>Bitcoin Cash CashTokens mini wallet*</h3>
-		<p><i>*experimental</i></p>
-		<br>
+		<h3>Bitcoin Cash CashTokens experimental mini wallet</h3>
 		<p>It can be used locally, on a pendrive, SD card, floppy disk, etc.</p>
-		<p>This is a client-side wallet. It is stored in indexedDB on your device.</p>
 		<p>Save your seed phrase and private key!</p>
 		<p>
 			If the browser closes and reopens, reload the wallet from the browser cache.<br>
@@ -73,7 +71,7 @@
 			Clear browser's cache (ctrl+shift+delete) if you're using the wallet on someone else's device.
 		</p>
 		<p>Viewing and sending NFT CashTokens is not fully implemented.<br>
-			Refresh the page and reload the wallet to update balances.
+			Reload the wallet to update balances.
 		</p>
 		<br>
 		<hr>
@@ -93,9 +91,11 @@
 		</div>
 		<hr>
 		<div>
-			<button type="button" class="collapsible">Import wallet from seed phrase</button>
+			<button type="button" class="collapsible">Import wallet</button>
 			<div class="content">
 				<p><input id="importSeedPhrase" type="text" size="56" placeholder="seed phrase"></p>
+				<p>or</p>
+				<p><input id="importPrivateKey" type="text" size="56" placeholder="private key (WIF)"></p>
 				<p><button type="button" id="import">Import</button></p>
 				<p id="cashtokensaddress2"></p>
 				<p id="tokens2"></p>
@@ -109,14 +109,14 @@
 		</div>
 		<hr>
 		<div>
-			<button type="button" class="collapsible">View tokens</button>
+			<button type="button" class="collapsible">View token details</button>
 			<div class="content">
 				<p>Choose metadata registry from the list.<br>
 					If custom BCMR is selected, paste url in the input field.
 				</p>
 				<select id="bcmrList">
 					<option value="https://mazetoken.github.io/.well-known/bitcoin-cash-metadata-registry.json">Maze Token MTU BCMR</option>
-					<option value="https://otr.cash/.well-known/bitcoin-cash-metadata-registry.json">Open Token Registry BCMR</option>
+					<option value="https://mazetoken.github.io/darklabs/bcmr/darklabsbcmr.json">Dark Labs CRC20 BCMR</option>
 					<option value="">custom BCMR</option>
 				</select>
 				<p><input id="bcmrCustom" type="text" size="56" placeholder="custom BCMR"></p>
@@ -194,7 +194,6 @@
 			<p>Claim <a href="https://microfi.onrender.com">Microfi Free Flow (XMI)</a> for free</p>
 			<p><a href="https://github.com/mazetoken/mazey/">Mazey</a>, 2023</p>
 			<p>Powered by <a href="https://mainnet.cash">mainnet-js</a></p>
-			<p>Inspired by <a href="https://cashonize.com">Cashonize</a> wallet</p>
 		</footer>
 		<br>
 	</div>
@@ -218,17 +217,6 @@
 	<script>
 	document.addEventListener("DOMContentLoaded", async (event) => {
 		Object.assign(globalThis, await __mainnetPromise);
-
-		let db;
-		const request = indexedDB.open("MazeyIndexedDB");
-		request.onerror = (event) => {
-		console.error("Why didn't you allow Mazey to use IndexedDB?");
-		};
-		request.onsuccess = (event) => {
-		db = event.target.result;
-		console.log("Mazey IndexedDB has been successfully initialized.");
-		};
-
 		Config.DefaultParentDerivationPath = "m/44'/145'/0'/0/0";
 		Config.EnforceCashTokenReceiptAddresses = true;
 
@@ -240,21 +228,10 @@
 			const wallet = await Wallet.replaceNamed("mazey", walletId);
 			const tokenAddress = await wallet.getTokenDepositAddress();
 			let tokensAddressBalance = await wallet.getAllTokenBalances();
-			let watch1 = wallet.watchBalance(async (newTokensBalance) => {
-			tokensAddressBalance = newTokensBalance;
-			await watch1;
-			});
 			let nftsAddressBalance = await wallet.getAllNftTokenBalances();
-			let watch2 = wallet.watchBalance(async (newNftsBalance) => {
-			nftsAddressBalance = newNftsBalance;
-			await watch2;
-			});
 			const bchAddress = await wallet.getDepositAddress();
 			let bchBalance = await wallet.getBalance();
-			let watch3 = wallet.watchBalance(async (newBchBalance) => {
-			bchBalance = newBchBalance;
-			await watch3;
-			});
+			
 			document.getElementById("cashtokensaddress1").textContent = "CashTokens address: " + tokenAddress;
 			document.getElementById("tokens1").textContent = "Tokens: " + JSON.stringify(tokensAddressBalance, null, '\t');
 			document.getElementById("nfts1").textContent = "NFTs: " + JSON.stringify(nftsAddressBalance, null, '\t');
@@ -269,24 +246,18 @@
 			const seed2 = document.querySelector("#importSeedPhrase").value;
 			const derivationPath = "m/44'/145'/0'/0/0";
 			const walletId1 = `seed:mainnet:${seed2}:${derivationPath}`;
-			var wallet = await Wallet.replaceNamed("mazey", walletId1);
+			const privatekey = document.querySelector("#importPrivateKey").value;
+			if (wallet = seed2) {
+				var wallet = await Wallet.replaceNamed("mazey", walletId1);
+			} else if (wallet = privatekey) {
+				var wallet = await Wallet.fromWIF(privatekey);
+			}
 			const tokenAddress = await wallet.getTokenDepositAddress();
 			let tokensAddressBalance = await wallet.getAllTokenBalances();
-			let watch1 = wallet.watchBalance(async (newTokensBalance) => {
-			tokensAddressBalance = newTokensBalance;
-			await watch1;
-			});
 			let nftsAddressBalance = await wallet.getAllNftTokenBalances();
-			let watch2 = wallet.watchBalance(async (newNftsBalance) => {
-			nftsAddressBalance = newNftsBalance;
-			await watch2;
-			});
 			const bchAddress = await wallet.getDepositAddress();
 			let bchBalance = await wallet.getBalance();
-			let watch3 = wallet.watchBalance(async (newBalance) => {
-			bchBalance = newBalance;
-			await watch3;
-			});
+			
 			document.getElementById("cashtokensaddress2").textContent = "CashTokens address: " + tokenAddress;
 			document.getElementById("tokens2").textContent = "Tokens: " + JSON.stringify(tokensAddressBalance, null, '\t');
 			document.getElementById("nfts2").textContent = "NFTs: " + JSON.stringify(nftsAddressBalance, null, '\t');
