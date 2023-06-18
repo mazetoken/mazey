@@ -51,7 +51,7 @@
 			overflow: hidden;
 			background-color: black;
 		}
-		@media screen and (max-width: 512px) {
+		@media screen and (max-width: 548px) {
 			body {
 				margin: auto;
 			}
@@ -145,7 +145,7 @@
 				<p id="tokendescription3"></p>
 				<img src id="tokenicon3" width="200"></p>
 			
-				<p>on-chain BCMR</p>
+				<p>on-chain BCMR (AuthChain)</p>
 				<p><input id="viewTokenId1" type="text" size="56" placeholder="tokenId"></p>
 				<p><button type="button" id="viewTokens1">View</button></p>
 				<p><i>Wait a few seconds</i></p>
@@ -155,6 +155,11 @@
 				<p id="tokendecimals4"></p>
 				<p id="tokendescription4"></p>
 				<img src id="tokenicon4" width="200"></p>
+
+				<p>Paytaca api</p>
+				<p><input id="viewTokenId2" type="text" size="56" placeholder="tokenId"></p>
+				<p><button type="button" id="viewTokens2">View</button></p>
+				<p id="tokenapi"></p>
 			</div>
 		</div>
 		<hr>
@@ -208,8 +213,9 @@
 		<br>
 		<footer>
 			<p>Claim <a href="https://microfi.onrender.com">Microfi Free Flow (XMI)</a> for free</p>
-			<p><a href="https://github.com/mazetoken/mazey/">Mazey</a>, 2023</p>
+			<p><a href="https://github.com/mazetoken/mazey/">Github</a> | <a href="https://t.me/mazetokens/">Telegram</a></p>
 			<p>Powered by <a href="https://mainnet.cash">mainnet-js</a></p>
+			<p>Mazey, 2023</p>
 		</footer>
 		<br>
 	</div>
@@ -333,6 +339,16 @@
 			document.getElementById("tokendecimals4").textContent = "Decimals: " + tokenInfo.token.decimals;
 			document.getElementById("tokendescription4").textContent = "Description: " + tokenInfo.description;
 			document.getElementById("tokenicon4").src = tokenInfo.uris.icon;
+		};
+
+		document.getElementById("viewTokens2").onclick = async () => {
+			const viewTokenId2 = document.querySelector("#viewTokenId2").value;
+			const apiUrl = "https://bcmr.paytaca.com/api/tokens/" + viewTokenId2;
+			fetch(apiUrl)
+				.then(response => response.json())
+				.then(data => document.getElementById("tokenapi").textContent = 
+				data.name + " " + data.token.symbol + " " + "| Decimals: " + data.token.decimals + " " + "| Description: " + data.description + " " + " " + "| Web: " + data.uris.web + " " + "| Icon: " + data.uris.icon
+				);
 		};
 
 		document.getElementById("sendBCH").onclick = async () => {
