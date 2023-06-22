@@ -61,7 +61,7 @@
 </head>
 <body>
 	<div>
-		<h1>Mazey</h1>
+		<h1>MAZEy</h1>
 		<h3>Bitcoin Cash CashTokens mini wallet</h3>
 		<p>It can be used locally, on a pendrive, SD card, floppy disk, etc.</p>
 		<p>Clear local storage if the wallet is being used on someone else's device.</p>
@@ -74,14 +74,14 @@
 			<button type="button" class="collapsible">Create wallet</button>
 			<div class="content">
 				<p><button id="create">Create</button></p>
-				<p id="cashtokensaddress1"></p>
-				<p id="tokens1"></p>
-				<p id="nfts1"></p>
 				<p id="bchaddress1"></p>
+				<p id="cashtokensaddress1"></p>
 				<p id="bchbalance1"></p>
 				<p id="mnemonic1"></p>
 				<p id="derivation1"></p>
 				<p id="privatekey1"></p>
+				<p id="tokens1"></p>
+				<p id="nfts1"></p>
 				<p>Save seed phrase and private key!</p>
 			</div>
 		</div>
@@ -90,14 +90,14 @@
 			<button type="button" class="collapsible">Open wallet</button>
 			<div class="content">
 				<p><button type="button" id="open">Open</button></p>
-				<p id="cashtokensaddress2"></p>
-				<p id="tokens2"></p>
-				<p id="nfts2"></p>
 				<p id="bchaddress2"></p>
+				<p id="cashtokensaddress2"></p>
 				<p id="bchbalance2"></p>
 				<p id="mnemonic2"></p>
 				<p id="derivation2"></p>
 				<p id="privatekey2"></p>
+				<p id="tokens2"></p>
+				<p id="nfts2"></p>
 				<p>To update your balances, refresh the page and click "Open".</p>
 			</div>
 		</div>
@@ -133,6 +133,7 @@
 				<select id="bcmrList">
 					<option value="https://mazetoken.github.io/.well-known/bitcoin-cash-metadata-registry.json">Maze Token MTU BCMR</option>
 					<option value="https://mazetoken.github.io/darklabs/bcmr/darklabsbcmr.json">Dark Labs CRC20 BCMR</option>
+					<option value="https://mazetoken.github.io/.well-known/crc20tobcmr.json">CRC20-to-BCMR</option>
 					<option value="">custom BCMR</option>
 				</select>
 				<p><input id="bcmrCustom" type="text" size="56" placeholder="custom BCMR"></p>
@@ -266,14 +267,14 @@
 			const bchAddress = await wallet.getDepositAddress();
 			let bchBalance = await wallet.getBalance();
 			
-			document.getElementById("cashtokensaddress1").textContent = "CashTokens address: " + tokenAddress;
-			document.getElementById("tokens1").textContent = "Tokens: " + JSON.stringify(tokensAddressBalance, null, '\t');
-			document.getElementById("nfts1").textContent = "NFTs: " + JSON.stringify(nftsAddressBalance, null, '\t');
 			document.getElementById("bchaddress1").textContent = "BCH address: " + bchAddress;
+			document.getElementById("cashtokensaddress1").textContent = "CashTokens address: " + tokenAddress;
 			document.getElementById("bchbalance1").textContent = "BCH balance: " + JSON.stringify(bchBalance);
 			document.getElementById("mnemonic1").textContent = "Seed phrase: " + wallet.mnemonic;
 			document.getElementById("derivation1").textContent = "Derivation path: " + wallet.derivationPath;
 			document.getElementById("privatekey1").textContent ="Private key: " + wallet.privateKeyWif;
+			document.getElementById("tokens1").textContent = "Tokens: " + JSON.stringify(tokensAddressBalance, null, '\t');
+			document.getElementById("nfts1").textContent = "NFTs: " + JSON.stringify(nftsAddressBalance, null, '\t');
 		};
 
 		document.getElementById("open").onclick = async () => {
@@ -293,14 +294,17 @@
 			const bchAddress = await wallet.getDepositAddress();
 			let bchBalance = await wallet.getBalance();
 			
-			document.getElementById("cashtokensaddress2").textContent = "CashTokens address: " + tokenAddress;
-			document.getElementById("tokens2").textContent = "Tokens: " + JSON.stringify(tokensAddressBalance, null, '\t');
-			document.getElementById("nfts2").textContent = "NFTs: " + JSON.stringify(nftsAddressBalance, null, '\t');
 			document.getElementById("bchaddress2").textContent = "BCH address: " + bchAddress;
+			document.getElementById("cashtokensaddress2").textContent = "CashTokens address: " + tokenAddress;
 			document.getElementById("bchbalance2").textContent = "BCH balance: " + JSON.stringify(bchBalance);
 			document.getElementById("mnemonic2").textContent = "Seed phrase: " + wallet.mnemonic;
 			document.getElementById("derivation2").textContent = "Derivation path: " + wallet.derivationPath;
 			document.getElementById("privatekey2").textContent ="Private key: " + wallet.privateKeyWif;
+			document.getElementById("tokens2").textContent = "Tokens: " + JSON.stringify(tokensAddressBalance, null, '\t');
+			//const json = JSON.stringify(tokensAddressBalance, null, '\t');
+			//const obj = JSON.parse(json);
+			//document.getElementById("tokens2").textContent = "Tokens: " + json;
+			document.getElementById("nfts2").textContent = "NFTs: " + JSON.stringify(nftsAddressBalance, null, '\t');
 		};
 
 		document.getElementById("login").onclick = async () => {
