@@ -58,7 +58,7 @@
 			}
 		}
 	</style>
-	<script src="https://cdn.jsdelivr.net/npm/mainnet-js@1.1.30/dist/mainnet-1.1.30.js" integrity="sha256-S/RegobQoEoBav/3F8EuKdoQK1hytruPVQNfqpZBZMA=" crossorigin="anonymous"></script>
+	<script defer src="https://cdn.jsdelivr.net/npm/mainnet-js@1.1.30/dist/mainnet-1.1.30.js" integrity="sha256-S/RegobQoEoBav/3F8EuKdoQK1hytruPVQNfqpZBZMA=" crossorigin="anonymous"></script>
 </head>
 <body>
 	<div>
@@ -254,13 +254,14 @@
 
 	<script>
 	document.addEventListener("DOMContentLoaded", async (event) => {
-		Object.assign(globalThis, await __mainnetPromise);
+		globalThis.exports = globalThis.exports || {};
+ 		Object.assign(globalThis, await __mainnetPromise);
+  		DefaultProvider.servers.testnet = ["wss://chipnet.imaginary.cash:50004"]
 		Config.DefaultParentDerivationPath = "m/44'/145'/0'/0/0";
 		//Config.EnforceCashTokenReceiptAddresses = true;
-		DefaultProvider.servers.testnet = ["wss://chipnet.imaginary.cash:50004"]
 
 		document.getElementById("create").onclick = async () => {
-			const wallet = await TestNetWallet.named("mazey");
+			const wallet = await TestNetWallet.named("tmazey");
 			localStorage.setItem("seed", wallet.mnemonic);
 			localStorage.setItem("wif", wallet.privateKeyWif);
 			const tokenAddress = await wallet.getTokenDepositAddress();
@@ -280,13 +281,13 @@
 		};
 
 		document.getElementById("open").onclick = async () => {
-			var wallet = await TestNetWallet.named("mazey");
+			var wallet = await TestNetWallet.named("mtazey");
 			const sd = localStorage.getItem("seed");
 			const derivationPath = "m/44'/145'/0'/0/0";
 			const walletId1 = `seed:testnet:${sd}:${derivationPath}`;
 			const pk = localStorage.getItem("wif");
 			if (wallet = sd) {
-				var wallet = await TestNetWallet.replaceNamed("mazey", walletId1);
+				var wallet = await TestNetWallet.replaceNamed("tmazey", walletId1);
 			} else if (wallet = pk) {
 				var wallet = await TestNetWallet.fromWIF(pk);
 			}
@@ -375,7 +376,7 @@
 			try {
 			const bchAddress = document.querySelector("#sendAddr").value;
 			const bchAmount = document.querySelector("#sendAmount").value;
-			const wallet = await TestNetWallet.named("mazey");
+			const wallet = await TestNetWallet.named("tmazey");
 			const { txId } = await wallet.send([
 				{
 				cashaddr: bchAddress,
@@ -392,7 +393,7 @@
 			const tokenAddress = document.querySelector("#sendAddrToken").value;
 			const tokenAmount = document.querySelector("#sendAmountToken").value;
 			const token = document.querySelector("#sendTokenId").value;
-			const wallet = await TestNetWallet.named("mazey");
+			const wallet = await TestNetWallet.named("tmazey");
 			const { txId } = await wallet.send([new TokenSendRequest(
 				{
 				cashaddr: tokenAddress,
@@ -409,7 +410,7 @@
 			const tokenAddress = document.querySelector("#sendAddrToken1").value;
 			const token1 = document.querySelector("#sendNftTokenId").value;
 			const nftCommitment = document.querySelector("#nftCommitment").value;
-			const wallet = await TestNetWallet.named("mazey");
+			const wallet = await TestNetWallet.named("tmazey");
 			const { txId } = await wallet.send([new TokenSendRequest(
 				{
 				cashaddr: tokenAddress,
@@ -444,7 +445,7 @@
 	<script>
 		document.getElementById("signM").onclick = async () => {
 		const sMessage = document.querySelector("#smessage").value;
-		const wallet = await TestNetWallet.named("mazey");
+		const wallet = await TestNetWallet.named("tmazey");
 		wallet.cashaddr;
 		sign = (await wallet.sign(sMessage)).signature;
 		document.getElementById("signMessage").textContent = sign;

@@ -58,7 +58,7 @@
 			}
 		}
 	</style>
-	<script src="https://cdn.jsdelivr.net/npm/mainnet-js@1.1.30/dist/mainnet-1.1.30.js" integrity="sha256-S/RegobQoEoBav/3F8EuKdoQK1hytruPVQNfqpZBZMA=" crossorigin="anonymous"></script>
+	<script defer src="https://cdn.jsdelivr.net/npm/mainnet-js@1.1.30/dist/mainnet-1.1.30.js" integrity="sha256-S/RegobQoEoBav/3F8EuKdoQK1hytruPVQNfqpZBZMA=" crossorigin="anonymous"></script>
 </head>
 <body>
 	<div>
@@ -254,6 +254,7 @@
 
 	<script>
 	document.addEventListener("DOMContentLoaded", async (event) => {
+		globalThis.exports = globalThis.exports || {};
 		Object.assign(globalThis, await __mainnetPromise);
 		Config.DefaultParentDerivationPath = "m/44'/145'/0'/0/0";
 		//Config.EnforceCashTokenReceiptAddresses = true;
