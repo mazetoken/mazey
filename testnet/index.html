@@ -52,11 +52,7 @@
 			overflow: hidden;
 			background-color: black;
 		}
-		@media screen and (max-width: 600px) {
-			body {
-				margin: auto;
-			}
-		}
+		@media screen and (max-width: 512px) {}
 	</style>
 	<script defer src="https://cdn.jsdelivr.net/npm/mainnet-js@1.1.30/dist/mainnet-1.1.30.js" integrity="sha256-S/RegobQoEoBav/3F8EuKdoQK1hytruPVQNfqpZBZMA=" crossorigin="anonymous"></script>
 </head>
@@ -168,7 +164,7 @@
 		<div>
 			<button type="button" class="collapsible">Send BCH</button>
 			<div class="content">
-				<p><input id="sendAddr" type="text" size="56" placeholder="bitcoincash:q... or bitcoincash:z..."></p>
+				<p><input id="sendAddr" type="text" size="56" placeholder="bchtest:q... or bchtest:z..."></p>
 				<p><input id="sendAmount" type="text" size="56" placeholder="amount in satoshis"></p>
 				<p><button id="sendBCH">Send BCH</button></p>
 				<p id="bchsent"></p>
@@ -178,9 +174,9 @@
 		<div>
 			<button type="button" class="collapsible">Send fungible CashTokens</button>
 			<div class="content">
-				<p><input id="sendAddrToken" type="text" size="56" placeholder="bitcoincash:z..."></p>
-				<p><input id="sendTokenId" type="text" size="56" placeholder="tokenId"></p>
+				<p><input id="sendAddrToken" type="text" size="56" placeholder="bchtest:z..."></p>
 				<p><input id="sendAmountToken" type="text" size="56" placeholder="amount with decimal places"></p>
+				<p><input id="sendTokenId" type="text" size="56" placeholder="tokenId"></p>
 				<p><button id="sendTokens">Send tokens</button></p>
 				<p id="ftsent"></p>
 			</div>
@@ -255,7 +251,9 @@
 	document.addEventListener("DOMContentLoaded", async (event) => {
 		globalThis.exports = globalThis.exports || {};
  		Object.assign(globalThis, await __mainnetPromise);
-  		DefaultProvider.servers.testnet = ["wss://chipnet.imaginary.cash:50004"]
+  		//DefaultProvider.servers.testnet = ["wss://chipnet.imaginary.cash:50004"]
+		DefaultProvider.servers.testnet = ["wss://chipnet.c3-soft.com:64004"]
+		//DefaultProvider.servers.testnet = ["wss://chipnet.bch.ninja:50004"]
 		Config.DefaultParentDerivationPath = "m/44'/145'/0'/0/0";
 		//Config.EnforceCashTokenReceiptAddresses = true;
 
@@ -303,9 +301,6 @@
 			document.getElementById("derivation2").textContent = "Derivation path: " + wallet.derivationPath;
 			document.getElementById("privatekey2").textContent ="Private key: " + wallet.privateKeyWif;
 			document.getElementById("tokens2").textContent = "Tokens: " + JSON.stringify(tokensAddressBalance, null, "\t");
-			//const json = JSON.stringify(tokensAddressBalance, null, '\t');
-			//const obj = JSON.parse(json);
-			//document.getElementById("tokens2").textContent = "Tokens: " + json;
 			document.getElementById("nfts2").textContent = "NFTs: " + JSON.stringify(nftsAddressBalance, null, "\t");
 		};
 
