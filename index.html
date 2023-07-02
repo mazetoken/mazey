@@ -52,11 +52,7 @@
 			overflow: hidden;
 			background-color: black;
 		}
-		@media screen and (max-width: 600px) {
-			body {
-				margin: auto;
-			}
-		}
+		@media screen and (max-width: 512px) {}
 	</style>
 	<script defer src="https://cdn.jsdelivr.net/npm/mainnet-js@1.1.30/dist/mainnet-1.1.30.js" integrity="sha256-S/RegobQoEoBav/3F8EuKdoQK1hytruPVQNfqpZBZMA=" crossorigin="anonymous"></script>
 </head>
@@ -179,8 +175,8 @@
 			<button type="button" class="collapsible">Send fungible CashTokens</button>
 			<div class="content">
 				<p><input id="sendAddrToken" type="text" size="56" placeholder="bitcoincash:z..."></p>
-				<p><input id="sendTokenId" type="text" size="56" placeholder="tokenId"></p>
 				<p><input id="sendAmountToken" type="text" size="56" placeholder="amount with decimal places"></p>
+				<p><input id="sendTokenId" type="text" size="56" placeholder="tokenId"></p>
 				<p><button id="sendTokens">Send tokens</button></p>
 				<p id="ftsent"></p>
 			</div>
@@ -302,9 +298,6 @@
 			document.getElementById("derivation2").textContent = "Derivation path: " + wallet.derivationPath;
 			document.getElementById("privatekey2").textContent ="Private key: " + wallet.privateKeyWif;
 			document.getElementById("tokens2").textContent = "Tokens: " + JSON.stringify(tokensAddressBalance, null, "\t");
-			//const json = JSON.stringify(tokensAddressBalance, null, '\t');
-			//const obj = JSON.parse(json);
-			//document.getElementById("tokens2").textContent = "Tokens: " + json;
 			document.getElementById("nfts2").textContent = "NFTs: " + JSON.stringify(nftsAddressBalance, null, "\t");
 		};
 
