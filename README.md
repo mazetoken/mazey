@@ -6,6 +6,8 @@ Download index.html and use it locally, on a pendrive, SD card or floppy disk ;-
 
 or check https://mazetoken.github.io/mazey/
 
-index.html SHA256: 615B67BF1B44A5A11677498D50204A936D353EBACB32576692D80E6FF6E3446A
+testnet https://mazetoken.github.io/mazey/testnet/
+
+index.html SHA256: D38F0BD780BB55BF32F09EBAFA2328E2DD09D1772610B7B7D8CFC36AEA101658
 
 The wallet seed phrase / private key is stored in the local storage of the browser on your device
