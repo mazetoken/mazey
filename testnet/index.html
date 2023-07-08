@@ -231,7 +231,7 @@
 			<p><a href="https://github.com/mazetoken/mazey/">Github</a> | <a href="https://t.me/mazetokens/">Telegram</a></p>
 			<p>Check <a href="https://microfi.eu">Microfi Free Flow</a> CashTokens</p>
 			<p>Credits: <a href="https://mainnet.cash">mainnet.cash</a> | <a href="https://bcmr.paytaca.com/api/">Paytaca api</a> | <a href="https://gitlab.com/0353F40E/crc20-to-bcmr/-/blob/master/bcmr/bitcoin-cash-metadata-registry.json">crc2-to-bcmr</a></p>
-			<p>MAZEy on <a href="https://mazetoken.github.io/mazey/testnet/">testnet</a></p>
+			<p>MAZEy on <a href="https://mazetoken.github.io/mazey/">mainnet</a></p>
 			<p>Mazey, 2023</p>
 		</footer>
 		<br>
@@ -266,8 +266,8 @@
 		document.getElementById("create").onclick = async () => {
 			//const wallet = await TestNetWallet.newRandom();
 			const wallet = await TestNetWallet.named("tmazey");
-			localStorage.setItem("seed", wallet.mnemonic);
-			localStorage.setItem("wif", wallet.privateKeyWif);
+			localStorage.setItem("tseed", wallet.mnemonic);
+			localStorage.setItem("twif", wallet.privateKeyWif);
 			const tokenAddress = await wallet.getTokenDepositAddress();
 			let tokensAddressBalance = await wallet.getAllTokenBalances();
 			let nftsAddressBalance = await wallet.getAllNftTokenBalances();
@@ -286,9 +286,9 @@
 
 		document.getElementById("import").onclick = async () => {
 			const seedphrase = document.querySelector("#importSeedPhrase").value;
-			localStorage.setItem("seed", seedphrase);
+			localStorage.setItem("tseed", seedphrase);
 			const privatekey = document.querySelector("#importPrivateKey").value;
-			localStorage.setItem("wif", privatekey);
+			localStorage.setItem("twif", privatekey);
 			alert("Wallet is imported. Open the wallet.");
 			document.getElementById("loginConf1").textContent = "Imported seed phrase: " + seedphrase;
 			document.getElementById("loginConf2").textContent = "Imported privatekey: " + privatekey;
@@ -296,21 +296,21 @@
 
 		document.getElementById("open").onclick = async () => {
 			var wallet = await TestNetWallet.named("tmazey");
-			const sd = localStorage.getItem("seed");
+			const sd = localStorage.getItem("tseed");
 			const derivationPath = "m/44'/145'/0'/0/0";
-			var walletId1 = `seed:mainnet:${sd}:${derivationPath}`;
-			const pk = localStorage.getItem("wif");
-			var walletId2 = `wif:mainnet:${pk}`;
+			var walletId3 = `seed:mainnet:${sd}:${derivationPath}`;
+			const pk = localStorage.getItem("twif");
+			var walletId4 = `wif:mainnet:${pk}`;
 			//if (wallet = sd) {
 				//var wallet = await TestNetWallet.fromSeed(sd);
 			//} else if (wallet = pk) {
 				//var wallet = await TestNetWallet.fromWIF(pk);
 			//}
 			if (wallet = sd) {
-				var wallet = await TestNetWallet.replaceNamed("tmazey", walletId1);
+				var wallet = await TestNetWallet.replaceNamed("tmazey", walletId3);
 			} else if (wallet = pk) {
 				//var wallet = await TestNetWallet.fromWIF(pk);
-				var wallet = await TestNetWallet.replaceNamed("tmazey", walletId2);
+				var wallet = await TestNetWallet.replaceNamed("tmazey", walletId4);
 			}
 			const tokenAddress = await wallet.getTokenDepositAddress();
 			let tokensAddressBalance = await wallet.getAllTokenBalances();
