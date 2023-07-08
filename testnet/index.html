@@ -61,7 +61,7 @@
 	<div>
 		<h1>MAZEy</h1>
 		<h3>Bitcoin Cash <a href="https://cashtokens.org">CashTokens</a> mini wallet</h3>
-		<p><i>testnet</i></p>
+		<h3>on testnet</h3>
 		<p>It can be used locally, on a pendrive, SD card, floppy disk, etc.</p>
 		<p>Clear local storage if the wallet is being used on someone else's device.</p>
 		<p>Use it at your own risk and with small amount of BCH.</p>
@@ -72,7 +72,7 @@
 		<div>
 			<button type="button" class="collapsible">Create wallet</button>
 			<div class="content">
-				<p><button id="create">Create</button></p>
+				<p><button type="button" id="create">Create</button></p>
 				<p id="bchaddress1"></p>
 				<p id="cashtokensaddress1"></p>
 				<p id="bchbalance1"></p>
@@ -91,7 +91,7 @@
 				<p><input id="importSeedPhrase" type="text" size="50" placeholder="seed phrase"></p>
 				<p>or</p>
 				<p><input id="importPrivateKey" type="text" size="50" placeholder="private key (WIF)"></p>
-				<p><button type="button" id="login">Import</button></p>
+				<p><button type="button" id="import">Import</button></p>
 				<p id="loginConf1"></p>
 				<p id="loginConf2"></p>
 				<p>After importing, open the wallet.<br>The seed phrase or private key will be stored in the local storage of the browser.</p>
@@ -119,7 +119,7 @@
 			<button type="button" class="collapsible">Clear local storage</button>
 			<div class="content">
 				<p><button type="button" id="clear">Clear</button></p>
-				<p id="clear1"></p>
+				<!-- <p id="clear1"></p> -->
 				<p>The seed phrase or private key will be removed from the local storage of the browser.</p>
 			</div>
 		</div>
@@ -181,7 +181,7 @@
 				<p><input id="sendAddrToken" type="text" size="50" placeholder="bchtest:..."></p>
 				<p><input id="sendAmountToken" type="text" size="50" placeholder="amount with decimal places eg. 10000 is 100 with 2 decimals"></p>
 				<p><input id="sendTokenId" type="text" size="56" placeholder="tokenId"></p>
-				<p><button id="sendTokens">Send tokens</button></p>
+				<p><button type="button" id="sendTokens">Send tokens</button></p>
 				<p id="ftsent"></p>
 			</div>
 		</div>
@@ -192,7 +192,7 @@
 				<p><input id="sendAddrToken1" type="text" size="50" placeholder="bchtest:..."></p>
 				<p><input id="sendNftTokenId" type="text" size="50" placeholder="tokenId"></p>
 				<p><input id="nftCommitment" type="text" size="50" placeholder="NFT commitment"></p>
-				<p><button id="sendNfts">Send NFTs</button></p>
+				<p><button type="button" id="sendNfts">Send NFTs</button></p>
 				<p id="nftsent"></p>
 			</div>
 		</div>
@@ -200,14 +200,14 @@
 		<div>
 			<button type="button" class="collapsible">Payment request url (BCH only)</button>
 			<div class="content">
-				<p><input id="address" type="text" size="50" placeholder="address e.g. bchtest:..."></p>
+				<p><input id="address" type="text" size="50" placeholder="bchtest:..."></p>
 				<p><input id="amount" type="text" size="50" placeholder="amount e.g. 0.0001"></p>
 				<p><input id="label" type="text" size="50" placeholder="some text"></p>
-				<p><button id="createPaymentRequest">Create payment url</button></p>
+				<p><button type="button" id="createPaymentRequest">Create payment url</button></p>
 				<p id="payurl"></p>
 				
 				<p><input id="upayurl" type="text" size="50" placeholder="payment request url"></p>
-				<p><button id="usePaymentRequest">Use payment url</button> * with an external wallet</p>
+				<p><button type="button" id="usePaymentRequest">Use payment url</button> * with an external wallet</p>
 				<p id="usepayurl"></p>
 			</div>
 		</div>
@@ -216,12 +216,12 @@
 			<button type="button" class="collapsible">Sign or verify a message</button>
 			<div class="content">
 				<p><input id="smessage" type="text" size="50" placeholder="message"></p>
-				<p><button id="signM">Sign a message</button> * with MAZEy wallet</p>
+				<p><button type="button" id="signM">Sign a message</button> * with MAZEy wallet</p>
 				<p id="signMessage"></p>
 				
 				<p><input id="vaddress" type="text" size="50" placeholder="signing address"></p>
 				<p><input id="signH" type="text" size="50" placeholder="signature"></p>
-				<p><button id="verifyM">Verify a message</button></p>
+				<p><button type="button" id="verifyM">Verify a message</button></p>
 				<p id="verifyMessage"></p>
 			</div>
 		</div>
@@ -231,7 +231,7 @@
 			<p><a href="https://github.com/mazetoken/mazey/">Github</a> | <a href="https://t.me/mazetokens/">Telegram</a></p>
 			<p>Check <a href="https://microfi.eu">Microfi Free Flow</a> CashTokens</p>
 			<p>Credits: <a href="https://mainnet.cash">mainnet.cash</a> | <a href="https://bcmr.paytaca.com/api/">Paytaca api</a> | <a href="https://gitlab.com/0353F40E/crc20-to-bcmr/-/blob/master/bcmr/bitcoin-cash-metadata-registry.json">crc2-to-bcmr</a></p>
-			<p>MAZEy on <a href="https://mazetoken.github.io/mazey/">mainnet</a></p>
+			<p>MAZEy on <a href="https://mazetoken.github.io/mazey/testnet/">testnet</a></p>
 			<p>Mazey, 2023</p>
 		</footer>
 		<br>
@@ -258,13 +258,14 @@
 		globalThis.exports = globalThis.exports || {};
 		Object.assign(globalThis, await __mainnetPromise);
 		//DefaultProvider.servers.testnet = ["wss://chipnet.imaginary.cash:50004"]
-		DefaultProvider.servers.testnet = ["wss://chipnet.c3-soft.com:64004"]
-		//DefaultProvider.servers.testnet = ["wss://chipnet.bch.ninja:50004"]
+		//DefaultProvider.servers.testnet = ["wss://chipnet.c3-soft.com:64004"]
+		DefaultProvider.servers.testnet = ["wss://chipnet.bch.ninja:50004"]
 		Config.DefaultParentDerivationPath = "m/44'/145'/0'/0/0";
 		//Config.EnforceCashTokenReceiptAddresses = true;
 
 		document.getElementById("create").onclick = async () => {
-			var wallet = await TestNetWallet.newRandom();
+			//const wallet = await TestNetWallet.newRandom();
+			const wallet = await TestNetWallet.named("tmazey");
 			localStorage.setItem("seed", wallet.mnemonic);
 			localStorage.setItem("wif", wallet.privateKeyWif);
 			const tokenAddress = await wallet.getTokenDepositAddress();
@@ -272,7 +273,7 @@
 			let nftsAddressBalance = await wallet.getAllNftTokenBalances();
 			const bchAddress = await wallet.getDepositAddress();
 			let bchBalance = await wallet.getBalance();
-			
+			alert("BCH/CashTokens wallet is created.");
 			document.getElementById("bchaddress1").textContent = "BCH address: " + bchAddress;
 			document.getElementById("cashtokensaddress1").textContent = "CashTokens address: " + tokenAddress;
 			document.getElementById("bchbalance1").textContent = "BCH balance: " + JSON.stringify(bchBalance);
@@ -283,22 +284,33 @@
 			document.getElementById("nfts1").textContent = "NFTs: " + JSON.stringify(nftsAddressBalance, null, "\t");
 		};
 
-		document.getElementById("login").onclick = async () => {
-			const seed = document.querySelector("#importSeedPhrase").value;
-			localStorage.setItem("seed", seed);
+		document.getElementById("import").onclick = async () => {
+			const seedphrase = document.querySelector("#importSeedPhrase").value;
+			localStorage.setItem("seed", seedphrase);
 			const privatekey = document.querySelector("#importPrivateKey").value;
 			localStorage.setItem("wif", privatekey);
-			document.getElementById("loginConf1").textContent = "You are logged in with seed phrase: " + seed;
-			document.getElementById("loginConf2").textContent = "You are logged in with privatekey: " + privatekey;
+			alert("Wallet is imported. Open the wallet.");
+			document.getElementById("loginConf1").textContent = "Imported seed phrase: " + seedphrase;
+			document.getElementById("loginConf2").textContent = "Imported privatekey: " + privatekey;
 		}
 
 		document.getElementById("open").onclick = async () => {
-			const sdMazey = localStorage.getItem("seed");
-			const pkMazey = localStorage.getItem("wif");
-			if (wallet = sdMazey) {
-				var wallet = await TestNetWallet.fromSeed(sdMazey);
-			} else if (wallet = pkMazey) {
-				var wallet = await TestNetWallet.fromWIF(pkMazey);
+			var wallet = await TestNetWallet.named("tmazey");
+			const sd = localStorage.getItem("seed");
+			const derivationPath = "m/44'/145'/0'/0/0";
+			var walletId1 = `seed:mainnet:${sd}:${derivationPath}`;
+			const pk = localStorage.getItem("wif");
+			var walletId2 = `wif:mainnet:${pk}`;
+			//if (wallet = sd) {
+				//var wallet = await TestNetWallet.fromSeed(sd);
+			//} else if (wallet = pk) {
+				//var wallet = await TestNetWallet.fromWIF(pk);
+			//}
+			if (wallet = sd) {
+				var wallet = await TestNetWallet.replaceNamed("tmazey", walletId1);
+			} else if (wallet = pk) {
+				//var wallet = await TestNetWallet.fromWIF(pk);
+				var wallet = await TestNetWallet.replaceNamed("tmazey", walletId2);
 			}
 			const tokenAddress = await wallet.getTokenDepositAddress();
 			let tokensAddressBalance = await wallet.getAllTokenBalances();
@@ -322,7 +334,9 @@
 
 		document.getElementById("clear").onclick = async () => {
 			localStorage.clear();
-			document.getElementById("clear1").textContent = "Local storage is cleared. You have to login again.";
+			//document.getElementById("clear1").textContent = "Local storage is cleared. You have to import wallet again.";
+			alert("Local storage is cleared. You have to import wallet again.");
+			location.reload();
 		}
 
 		document.getElementById("viewTokens").onclick = async () => {
@@ -377,13 +391,14 @@
 			try {
 			const bchAddress = document.querySelector("#sendAddr").value;
 			const bchAmount = document.querySelector("#sendAmount").value;
-			const sdMazey = localStorage.getItem("seed");
-			const pkMazey = localStorage.getItem("wif");
-			if (wallet = sdMazey) {
-				var wallet = await TestNetWallet.fromSeed(sdMazey);
-			} else if (wallet = pkMazey) {
-				var wallet = await TestNetWallet.fromWIF(pkMazey);
-			}
+			const wallet = await TestNetWallet.named("tmazey");
+			//const sd = localStorage.getItem("seed");
+			//const pk = localStorage.getItem("wif");
+			//if (wallet = sd) {
+				//var wallet = await TestWallet.fromSeed(sd);
+			//} else if (wallet = pk) {
+				//var wallet = await TestWallet.fromWIF(pk);
+			//}
 			const { txId } = await wallet.send([
 				{
 				cashaddr: bchAddress,
@@ -400,13 +415,14 @@
 			const tokenAddress = document.querySelector("#sendAddrToken").value;
 			const tokenAmount = document.querySelector("#sendAmountToken").value;
 			const token = document.querySelector("#sendTokenId").value;
-			const sdMazey = localStorage.getItem("seed");
-			const pkMazey = localStorage.getItem("wif");
-			if (wallet = sdMazey) {
-				var wallet = await TestNetWallet.fromSeed(sdMazey);
-			} else if (wallet = pkMazey) {
-				var wallet = await TestNetWallet.fromWIF(pkMazey);
-			}
+			const wallet = await TestNetWallet.named("tmazey");
+			//const sd = localStorage.getItem("seed");
+			//const pk = localStorage.getItem("wif");
+			//if (wallet = sd) {
+				//var wallet = await TestNetWallet.fromSeed(sd);
+			//} else if (wallet = pk) {
+				//var wallet = await TestNetWallet.fromWIF(pk);
+			//}
 			const { txId } = await wallet.send([new TokenSendRequest(
 				{
 				cashaddr: tokenAddress,
@@ -423,11 +439,14 @@
 			const tokenAddress = document.querySelector("#sendAddrToken1").value;
 			const token1 = document.querySelector("#sendNftTokenId").value;
 			const nftCommitment = document.querySelector("#nftCommitment").value;
-			if (wallet = sdMazey) {
-				var wallet = await TestNetWallet.fromSeed(sdMazey);
-			} else if (wallet = pkMazey) {
-				var wallet = await TestNetWallet.fromWIF(pkMazey);
-			}
+			const wallet = await TestNetWallet.named("tmazey");
+			//const sd = localStorage.getItem("seed");
+			//const pk = localStorage.getItem("wif");
+			//if (wallet = sd) {
+				//var wallet = await TestNetWallet.fromSeed(sd);
+			//} else if (wallet = pk) {
+				//var wallet = await TestNetWallet.fromWIF(pk);
+			//}
 			const { txId } = await wallet.send([new TokenSendRequest(
 				{
 				cashaddr: tokenAddress,
@@ -462,11 +481,14 @@
 	<script>
 		document.getElementById("signM").onclick = async () => {
 		const sMessage = document.querySelector("#smessage").value;
-		if (wallet = sdMazey) {
-				var wallet = await TestNetWallet.fromSeed(sdMazey);
-			} else if (wallet = pkMazey) {
-				var wallet = await TestNetWallet.fromWIF(pkMazey);
-			}
+		const wallet = await TestNetWallet.named("tmazey");
+		//const sd = localStorage.getItem("seed");
+		//const pk = localStorage.getItem("wif");
+		//if (wallet = sd) {
+				//var wallet = await TestNetWallet.fromSeed(sd);
+			//} else if (wallet = pk) {
+				//var wallet = await TestNetWallet.fromWIF(pk);
+			//}
 		wallet.cashaddr;
 		sign = (await wallet.sign(sMessage)).signature;
 		document.getElementById("signMessage").textContent = sign;
