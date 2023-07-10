@@ -61,10 +61,11 @@
 	<div>
 		<h1>MAZEy</h1>
 		<h3>Bitcoin Cash <a href="https://cashtokens.org">CashTokens</a> mini wallet</h3>
-		<p>It can be used locally, on a pendrive, SD card, floppy disk, etc.</p>
-		<p>Clear local storage if the wallet is being used on someone else's device.</p>
-		<p>Use it at your own risk and with small amount of BCH.</p>
-		<p>The wallet is under development. Viewing and sending NFT CashTokens is not fully implemented.</p>
+		<p>It can be used locally, on a pendrive, SD card, floppy disk, etc.<br>
+			Clear local storage if the wallet is being used on someone else's device.
+		</p>
+		<p>Use it at your own risk and with small amount of BCH.<br>
+			The wallet is under development. Viewing and sending NFT CashTokens is not fully implemented.
 		</p>
 		<br>
 		<hr>
@@ -179,7 +180,7 @@
 			<div class="content">
 				<p><input id="sendAddrToken" type="text" size="50" placeholder="bitcoincash:z..."></p>
 				<p><input id="sendAmountToken" type="text" size="50" placeholder="amount with decimal places eg. 10000 is 100 with 2 decimals"></p>
-				<p><input id="sendTokenId" type="text" size="56" placeholder="tokenId"></p>
+				<p><input id="sendTokenId" type="text" size="50" placeholder="tokenId"></p>
 				<p><button type="button" id="sendTokens">Send tokens</button></p>
 				<p id="ftsent"></p>
 			</div>
@@ -228,7 +229,10 @@
 		<br>
 		<footer>
 			<p><a href="https://github.com/mazetoken/mazey/">Github</a> | <a href="https://t.me/mazetokens/">Telegram</a></p>
-			<p>Check <a href="https://microfi.eu">Microfi Free Flow</a> CashTokens</p>
+			<p>Check:<br><a href="https://microfi.eu">Microfi Free Flow</a> CashToken<br>
+				<a href="https://mazetoken.github.io/darklabs/">Dark Labs</a> CRC20 CashTokens
+			</p>
+			<br>
 			<p>Credits: <a href="https://mainnet.cash">mainnet.cash</a> | <a href="https://bcmr.paytaca.com/api/">Paytaca api</a> | <a href="https://gitlab.com/0353F40E/crc20-to-bcmr/-/blob/master/bcmr/bitcoin-cash-metadata-registry.json">crc2-to-bcmr</a></p>
 			<p>MAZEy on <a href="https://mazetoken.github.io/mazey/testnet/">testnet</a></p>
 			<p>Mazey, 2023</p>
@@ -260,7 +264,6 @@
 		//Config.EnforceCashTokenReceiptAddresses = true;
 
 		document.getElementById("create").onclick = async () => {
-			//const wallet = await Wallet.newRandom();
 			const wallet = await Wallet.named("mazey");
 			localStorage.setItem("seed", wallet.mnemonic);
 			localStorage.setItem("wif", wallet.privateKeyWif);
@@ -297,15 +300,9 @@
 			var walletId1 = `seed:mainnet:${sd}:${derivationPath}`;
 			const pk = localStorage.getItem("wif");
 			var walletId2 = `wif:mainnet:${pk}`;
-			//if (wallet = sd) {
-				//var wallet = await Wallet.fromSeed(sd);
-			//} else if (wallet = pk) {
-				//var wallet = await Wallet.fromWIF(pk);
-			//}
 			if (wallet = sd) {
 				var wallet = await Wallet.replaceNamed("mazey", walletId1);
 			} else if (wallet = pk) {
-				//var wallet = await Wallet.fromWIF(pk);
 				var wallet = await Wallet.replaceNamed("mazey", walletId2);
 			}
 			const tokenAddress = await wallet.getTokenDepositAddress();
@@ -388,13 +385,6 @@
 			const bchAddress = document.querySelector("#sendAddr").value;
 			const bchAmount = document.querySelector("#sendAmount").value;
 			const wallet = await Wallet.named("mazey");
-			//const sd = localStorage.getItem("seed");
-			//const pk = localStorage.getItem("wif");
-			//if (wallet = sd) {
-				//var wallet = await Wallet.fromSeed(sd);
-			//} else if (wallet = pk) {
-				//var wallet = await Wallet.fromWIF(pk);
-			//}
 			const { txId } = await wallet.send([
 				{
 				cashaddr: bchAddress,
@@ -412,13 +402,6 @@
 			const tokenAmount = document.querySelector("#sendAmountToken").value;
 			const token = document.querySelector("#sendTokenId").value;
 			const wallet = await Wallet.named("mazey");
-			//const sd = localStorage.getItem("seed");
-			//const pk = localStorage.getItem("wif");
-			//if (wallet = sd) {
-				//var wallet = await Wallet.fromSeed(sd);
-			//} else if (wallet = pk) {
-				//var wallet = await Wallet.fromWIF(pk);
-			//}
 			const { txId } = await wallet.send([new TokenSendRequest(
 				{
 				cashaddr: tokenAddress,
@@ -436,13 +419,6 @@
 			const token1 = document.querySelector("#sendNftTokenId").value;
 			const nftCommitment = document.querySelector("#nftCommitment").value;
 			const wallet = await Wallet.named("mazey");
-			//const sd = localStorage.getItem("seed");
-			//const pk = localStorage.getItem("wif");
-			//if (wallet = sd) {
-				//var wallet = await Wallet.fromSeed(sd);
-			//} else if (wallet = pk) {
-				//var wallet = await Wallet.fromWIF(pk);
-			//}
 			const { txId } = await wallet.send([new TokenSendRequest(
 				{
 				cashaddr: tokenAddress,
@@ -478,13 +454,6 @@
 		document.getElementById("signM").onclick = async () => {
 		const sMessage = document.querySelector("#smessage").value;
 		const wallet = await Wallet.named("mazey");
-		//const sd = localStorage.getItem("seed");
-		//const pk = localStorage.getItem("wif");
-		//if (wallet = sd) {
-				//var wallet = await Wallet.fromSeed(sd);
-			//} else if (wallet = pk) {
-				//var wallet = await Wallet.fromWIF(pk);
-			//}
 		wallet.cashaddr;
 		sign = (await wallet.sign(sMessage)).signature;
 		document.getElementById("signMessage").textContent = sign;
