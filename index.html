@@ -345,7 +345,9 @@
 		}
 
 		document.getElementById("clear").onclick = async () => {
-			localStorage.clear();
+			//localStorage.clear();
+			localStorage.removeItem("seed");
+			localStorage.removeItem("wif");
 			//document.getElementById("clear1").textContent = "Local storage is cleared. You have to import wallet again.";
 			alert("Local storage is cleared. You have to import wallet again.");
 			location.reload();
@@ -407,7 +409,7 @@
 			const { txId } = await wallet.send([
 				{
 				cashaddr: bchAddress,
-				value: bchAmount,
+				value: bchAmount - 546,
 				unit: "sat"
 				}
 			]);
