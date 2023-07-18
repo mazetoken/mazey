@@ -55,17 +55,18 @@
 		@media screen and (max-width: 512px) {
 		}
 	</style>
-	<script defer src="https://cdn.jsdelivr.net/npm/mainnet-js@1.1.30/dist/mainnet-1.1.30.js" integrity="sha256-S/RegobQoEoBav/3F8EuKdoQK1hytruPVQNfqpZBZMA=" crossorigin="anonymous"></script>
+	<script defer src="https://cdn.jsdelivr.net/npm/mainnet-js@1.1.31/dist/mainnet-1.1.31.js" integrity="sha256-rmOpIf/WGsAIIHtE8D7zTWOhHKo/ZMW730ROMPLWZCI=" crossorigin="anonymous"></script>
 </head>
 <body>
 	<div>
 		<h1>MAZEy</h1>
 		<h3>Bitcoin Cash <a href="https://cashtokens.org">CashTokens</a> mini wallet</h3>
 		<h3>on testnet</h3>
-		<p>It can be used locally, on a pendrive, SD card, floppy disk, etc.</p>
-		<p>Clear local storage if the wallet is being used on someone else's device.</p>
-		<p>Use it at your own risk and with small amount of BCH.</p>
-		<p>The wallet is under development. Viewing and sending NFT CashTokens is not fully implemented.</p>
+		<p>It can be used locally, on a pendrive, SD card, floppy disk, etc.<br>
+			Clear local storage if the wallet is being used on someone else's device.
+		</p>
+		<p>Use it at your own risk and with small amount of BCH.<br>
+			The wallet is under development. Viewing and sending NFT CashTokens is not fully implemented.
 		</p>
 		<br>
 		<hr>
@@ -180,7 +181,7 @@
 			<div class="content">
 				<p><input id="sendAddrToken" type="text" size="50" placeholder="bchtest:..."></p>
 				<p><input id="sendAmountToken" type="text" size="50" placeholder="amount with decimal places eg. 10000 is 100 with 2 decimals"></p>
-				<p><input id="sendTokenId" type="text" size="56" placeholder="tokenId"></p>
+				<p><input id="sendTokenId" type="text" size="50" placeholder="tokenId"></p>
 				<p><button type="button" id="sendTokens">Send tokens</button></p>
 				<p id="ftsent"></p>
 			</div>
@@ -194,6 +195,25 @@
 				<p><input id="nftCommitment" type="text" size="50" placeholder="NFT commitment"></p>
 				<p><button type="button" id="sendNfts">Send NFTs</button></p>
 				<p id="nftsent"></p>
+			</div>
+		</div>
+		<hr>
+		<div>
+			<button type="button" class="collapsible">CashTokens paper wallet</button>
+			<div class="content">
+				<p>Generate <a href="./paperwallet/">paper wallet</a></p>
+				<p><input id="sweepPk" type="text" size="50" placeholder="Paste a paper wallet private key here"></p>
+				<p><button id="balancePw">Check paper wallet balance</button></p>
+				<p id="bchbalancePw"></p>
+				<p id="tokenbalancePw"></p>
+				<p>Before sweeping, you need to create a Mazey wallet or import an existing wallet into Mazey.<br>
+					Do not import paper wallet private key into Mazey.
+				</p>
+				<p><input id="sendAmountPw" type="text" size="50" placeholder="BCH balance in satoshis"></p>
+				<p><input id="sendTokenIdPw" type="text" size="50" placeholder="token Id"></p>
+				<p><input id="sendTokenAmountPw" type="text" size="50" placeholder="Token balance"></p>
+				<p><button id="sweepPw">Sweep paper wallet</button></p>
+				<p id="swept"></p>
 			</div>
 		</div>
 		<hr>
@@ -257,14 +277,13 @@
 	document.addEventListener("DOMContentLoaded", async (event) => {
 		globalThis.exports = globalThis.exports || {};
 		Object.assign(globalThis, await __mainnetPromise);
-		//DefaultProvider.servers.testnet = ["wss://chipnet.imaginary.cash:50004"]
+		DefaultProvider.servers.testnet = ["wss://chipnet.imaginary.cash:50004"]
 		//DefaultProvider.servers.testnet = ["wss://chipnet.c3-soft.com:64004"]
-		DefaultProvider.servers.testnet = ["wss://chipnet.bch.ninja:50004"]
+		//DefaultProvider.servers.testnet = ["wss://chipnet.bch.ninja:50004"]
 		Config.DefaultParentDerivationPath = "m/44'/145'/0'/0/0";
 		//Config.EnforceCashTokenReceiptAddresses = true;
 
 		document.getElementById("create").onclick = async () => {
-			//const wallet = await TestNetWallet.newRandom();
 			const wallet = await TestNetWallet.named("tmazey");
 			localStorage.setItem("tseed", wallet.mnemonic);
 			localStorage.setItem("twif", wallet.privateKeyWif);
@@ -298,14 +317,9 @@
 			var wallet = await TestNetWallet.named("tmazey");
 			const sd = localStorage.getItem("tseed");
 			const derivationPath = "m/44'/145'/0'/0/0";
-			var walletId3 = `seed:mainnet:${sd}:${derivationPath}`;
+			var walletId3 = `seed:testnet:${sd}:${derivationPath}`;
 			const pk = localStorage.getItem("twif");
-			var walletId4 = `wif:mainnet:${pk}`;
-			//if (wallet = sd) {
-				//var wallet = await TestNetWallet.fromSeed(sd);
-			//} else if (wallet = pk) {
-				//var wallet = await TestNetWallet.fromWIF(pk);
-			//}
+			var walletId4 = `wif:testnet:${pk}`;
 			if (wallet = sd) {
 				var wallet = await TestNetWallet.replaceNamed("tmazey", walletId3);
 			} else if (wallet = pk) {
@@ -392,18 +406,11 @@
 			const bchAddress = document.querySelector("#sendAddr").value;
 			const bchAmount = document.querySelector("#sendAmount").value;
 			const wallet = await TestNetWallet.named("tmazey");
-			//const sd = localStorage.getItem("seed");
-			//const pk = localStorage.getItem("wif");
-			//if (wallet = sd) {
-				//var wallet = await TestWallet.fromSeed(sd);
-			//} else if (wallet = pk) {
-				//var wallet = await TestWallet.fromWIF(pk);
-			//}
 			const { txId } = await wallet.send([
 				{
 				cashaddr: bchAddress,
 				value: bchAmount,
-				unit: "sat"
+				unit: "sat",
 				}
 			]);
 			document.getElementById("bchsent").textContent = "txId: " + txId;
@@ -416,18 +423,11 @@
 			const tokenAmount = document.querySelector("#sendAmountToken").value;
 			const token = document.querySelector("#sendTokenId").value;
 			const wallet = await TestNetWallet.named("tmazey");
-			//const sd = localStorage.getItem("seed");
-			//const pk = localStorage.getItem("wif");
-			//if (wallet = sd) {
-				//var wallet = await TestNetWallet.fromSeed(sd);
-			//} else if (wallet = pk) {
-				//var wallet = await TestNetWallet.fromWIF(pk);
-			//}
 			const { txId } = await wallet.send([new TokenSendRequest(
 				{
 				cashaddr: tokenAddress,
 				amount: tokenAmount,
-				tokenId: token
+				tokenId: token,
 				}
 			)]);
 			document.getElementById("ftsent").textContent = "txId: " + txId;
@@ -440,22 +440,51 @@
 			const token1 = document.querySelector("#sendNftTokenId").value;
 			const nftCommitment = document.querySelector("#nftCommitment").value;
 			const wallet = await TestNetWallet.named("tmazey");
-			//const sd = localStorage.getItem("seed");
-			//const pk = localStorage.getItem("wif");
-			//if (wallet = sd) {
-				//var wallet = await TestNetWallet.fromSeed(sd);
-			//} else if (wallet = pk) {
-				//var wallet = await TestNetWallet.fromWIF(pk);
-			//}
 			const { txId } = await wallet.send([new TokenSendRequest(
 				{
 				cashaddr: tokenAddress,
 				tokenId: token1,
 				commitment: nftCommitment,
-				capability: NFTCapability.none
+				capability: NFTCapability.none,
 				}
 			)]);
 			document.getElementById("nftsent").textContent = "txId: " + txId;
+			} catch (error) { alert(error) }
+		};
+
+		document.getElementById("balancePw").onclick = async () => {
+			try {
+			const sweepPk = document.querySelector("#sweepPk").value;
+			var tempWallet = await TestNetWallet.fromWIF(sweepPk);
+			let bchBalancePw = await tempWallet.getBalance();
+			let tokensAddressBalancePw = await tempWallet.getAllTokenBalances();
+			document.getElementById("bchbalancePw").textContent = "BCH balance: " + JSON.stringify(bchBalancePw);
+			document.getElementById("tokenbalancePw").textContent = "Token balance: " + JSON.stringify(tokensAddressBalancePw);
+			} catch (error) { alert(error) }
+		};
+
+		document.getElementById("sweepPw").onclick = async () => {
+			try {
+			var wallet = await TestNetWallet.named("tmazey");
+			const sweepPk = document.querySelector("#sweepPk").value;
+			const bchAmountPw = document.querySelector("#sendAmountPw").value;
+			const tokenIdPw = document.querySelector("#sendTokenIdPw").value;
+			const tokenAmountPw = document.querySelector("#sendTokenAmountPw").value;
+			var tempWallet = await TestNetWallet.fromWIF(sweepPk);
+				const { txId } = await tempWallet.send([
+					{
+					cashaddr: wallet.getDepositAddress(),
+					value: bchAmountPw - 800,
+					unit: "sat",
+					},
+					new TokenSendRequest(
+					{
+					cashaddr: wallet.getTokenDepositAddress(),
+					amount: tokenAmountPw,
+					tokenId: tokenIdPw,
+					}),
+				]);
+			document.getElementById("swept").textContent = "txId: " + txId;
 			} catch (error) { alert(error) }
 		};
 	});
@@ -482,13 +511,6 @@
 		document.getElementById("signM").onclick = async () => {
 		const sMessage = document.querySelector("#smessage").value;
 		const wallet = await TestNetWallet.named("tmazey");
-		//const sd = localStorage.getItem("seed");
-		//const pk = localStorage.getItem("wif");
-		//if (wallet = sd) {
-				//var wallet = await TestNetWallet.fromSeed(sd);
-			//} else if (wallet = pk) {
-				//var wallet = await TestNetWallet.fromWIF(pk);
-			//}
 		wallet.cashaddr;
 		sign = (await wallet.sign(sMessage)).signature;
 		document.getElementById("signMessage").textContent = sign;
