@@ -72,29 +72,13 @@
 		<div>
 			<button type="button" class="collapsible">Create wallet</button>
 			<div class="content">
+				<p>Create a new wallet:</p>
 				<p><button type="button" id="create">Create</button></p>
-				<p id="bchaddress1"></p>
-				<p id="cashtokensaddress1"></p>
-				<p id="bchbalance1"></p>
-				<p id="mnemonic1"></p>
-				<p id="derivation1"></p>
-				<p id="privatekey1"></p>
-				<p id="tokens1"></p>
-				<p id="nfts1"></p>
-				<p>Save seed phrase and private key!</p>
-			</div>
-		</div>
-		<hr>
-		<div>
-			<button type="button" class="collapsible">Import wallet from seed phrase or private key</button>
-			<div class="content">
+				<p>Import a wallet from seed phrase or private key:</p>
 				<p><input id="importSeedPhrase" type="text" size="50" placeholder="seed phrase"></p>
 				<p>or</p>
 				<p><input id="importPrivateKey" type="text" size="50" placeholder="private key (WIF)"></p>
 				<p><button type="button" id="import">Import</button></p>
-				<p id="loginConf1"></p>
-				<p id="loginConf2"></p>
-				<p>After importing, open the wallet.<br>The seed phrase or private key will be stored in the local storage of the browser.</p>
 			</div>
 		</div>
 		<hr>
@@ -119,7 +103,6 @@
 			<button type="button" class="collapsible">Clear local storage</button>
 			<div class="content">
 				<p><button type="button" id="clear">Clear</button></p>
-				<!-- <p id="clear1"></p> -->
 				<p>The seed phrase or private key will be removed from the local storage of the browser.</p>
 			</div>
 		</div>
@@ -277,29 +260,17 @@
 
 	<script>
 	document.addEventListener("DOMContentLoaded", async (event) => {
-		globalThis.exports = globalThis.exports || {};
+		//globalThis.exports = globalThis.exports || {};
 		Object.assign(globalThis, await __mainnetPromise);
 		Config.DefaultParentDerivationPath = "m/44'/145'/0'/0/0";
 		//Config.EnforceCashTokenReceiptAddresses = true;
 
 		document.getElementById("create").onclick = async () => {
-			const wallet = await Wallet.named("mazey");
+			//const wallet = await Wallet.named("mazey");
+			const wallet = await Wallet.newRandom();
 			localStorage.setItem("seed", wallet.mnemonic);
 			localStorage.setItem("wif", wallet.privateKeyWif);
-			const tokenAddress = await wallet.getTokenDepositAddress();
-			let tokensAddressBalance = await wallet.getAllTokenBalances();
-			let nftsAddressBalance = await wallet.getAllNftTokenBalances();
-			const bchAddress = await wallet.getDepositAddress();
-			let bchBalance = await wallet.getBalance();
-			alert("BCH/CashTokens wallet is created.");
-			document.getElementById("bchaddress1").textContent = "BCH address: " + bchAddress;
-			document.getElementById("cashtokensaddress1").textContent = "CashTokens address: " + tokenAddress;
-			document.getElementById("bchbalance1").textContent = "BCH balance: " + JSON.stringify(bchBalance);
-			document.getElementById("mnemonic1").textContent = "Seed phrase: " + wallet.mnemonic;
-			document.getElementById("derivation1").textContent = "Derivation path: " + wallet.derivationPath;
-			document.getElementById("privatekey1").textContent ="Private key: " + wallet.privateKeyWif;
-			document.getElementById("tokens1").textContent = "Tokens: " + JSON.stringify(tokensAddressBalance, null, "\t");
-			document.getElementById("nfts1").textContent = "NFTs: " + JSON.stringify(nftsAddressBalance, null, "\t");
+			alert("Done. You can open the wallet. Save the seed phrase and private key.");
 		};
 
 		document.getElementById("import").onclick = async () => {
@@ -307,9 +278,7 @@
 			localStorage.setItem("seed", seedphrase);
 			const privatekey = document.querySelector("#importPrivateKey").value;
 			localStorage.setItem("wif", privatekey);
-			alert("Wallet is imported. Open the wallet.");
-			document.getElementById("loginConf1").textContent = "Imported seed phrase: " + seedphrase;
-			document.getElementById("loginConf2").textContent = "Imported privatekey: " + privatekey;
+			alert("Done. The wallet is imported. You can open the wallet.");
 		}
 
 		document.getElementById("open").onclick = async () => {
@@ -345,11 +314,9 @@
 		}
 
 		document.getElementById("clear").onclick = async () => {
-			//localStorage.clear();
-			localStorage.removeItem("seed");
-			localStorage.removeItem("wif");
-			//document.getElementById("clear1").textContent = "Local storage is cleared. You have to import wallet again.";
-			alert("Local storage is cleared. You have to import wallet again.");
+			indexedDB.deleteDatabase("bitcoincash");
+			localStorage.clear();
+			alert("Seed phrase / private key were removed. You have to import a wallet again.");
 			location.reload();
 		}
 
