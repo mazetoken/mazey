@@ -318,9 +318,9 @@
 
 		document.getElementById("clear").onclick = async () => {
     		indexedDB.deleteDatabase("bchtest");
-			localStorage.clear();
-			//localStorage.removeItem("tseed");
-			//localStorage.removeItem("twif");
+			//localStorage.clear();
+			localStorage.removeItem("tseed");
+			localStorage.removeItem("twif");
 			alert("Seed phrase / private key were removed. You have to import a wallet again.");
 			location.reload();
 		}

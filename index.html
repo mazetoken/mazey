@@ -263,6 +263,7 @@
 		//globalThis.exports = globalThis.exports || {};
 		Object.assign(globalThis, await __mainnetPromise);
 		Config.DefaultParentDerivationPath = "m/44'/145'/0'/0/0";
+		//Config.DefaultParentDerivationPath = "m/44'/145'/0'";
 		//Config.EnforceCashTokenReceiptAddresses = true;
 
 		document.getElementById("create").onclick = async () => {
@@ -285,6 +286,7 @@
 			var wallet = await Wallet.named("mazey");
 			const sd = localStorage.getItem("seed");
 			const derivationPath = "m/44'/145'/0'/0/0";
+			//const derivationPath = "m/44'/145'/0'";
 			var walletId1 = `seed:mainnet:${sd}:${derivationPath}`;
 			const pk = localStorage.getItem("wif");
 			var walletId2 = `wif:mainnet:${pk}`;
@@ -315,7 +317,9 @@
 
 		document.getElementById("clear").onclick = async () => {
 			indexedDB.deleteDatabase("bitcoincash");
-			localStorage.clear();
+			//localStorage.clear();
+			localStorage.removeItem("seed");
+			localStorage.removeItem("wif");
 			alert("Seed phrase / private key were removed. You have to import a wallet again.");
 			location.reload();
 		}
