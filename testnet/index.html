@@ -195,7 +195,8 @@
 				<p><input id="sendAmountPw" type="text" size="50" placeholder="BCH balance in satoshis"></p>
 				<p><input id="sendTokenIdPw" type="text" size="50" placeholder="token Id"></p>
 				<p><input id="sendTokenAmountPw" type="text" size="50" placeholder="Token balance"></p>
-				<p><button id="sweepPw">Sweep paper wallet</button></p>
+				<p><button id="sweepPw">Sweep tokens and BCH</button> * if paper wallet has tokens and BCH</p>
+				<p><button id="sweepPwBch">Sweep BCH</button> * if paper wallet has only BCH</p>
 				<p id="swept"></p>
 			</div>
 		</div>
@@ -381,7 +382,7 @@
 			const { txId } = await wallet.send([
 				{
 				cashaddr: bchAddress,
-				value: bchAmount - 546,
+				value: bchAmount,
 				unit: "sat",
 				}
 			]);
@@ -455,6 +456,23 @@
 					amount: tokenAmountPw,
 					tokenId: tokenIdPw,
 					}),
+				]);
+			document.getElementById("swept").textContent = "txId: " + txId;
+			} catch (error) { alert(error) }
+		};
+
+		document.getElementById("sweepPwBch").onclick = async () => {
+			try {
+			var wallet = await TestNetWallet.named("tmazey");
+			const sweepPk = document.querySelector("#sweepPk").value;
+			const bchAmountPw = document.querySelector("#sendAmountPw").value;
+			var tempWallet = await TestNetWallet.fromWIF(sweepPk);
+				const { txId } = await tempWallet.send([
+					{
+					cashaddr: wallet.getDepositAddress(),
+					value: bchAmountPw - 546,
+					unit: "sat",
+					},
 				]);
 			document.getElementById("swept").textContent = "txId: " + txId;
 			} catch (error) { alert(error) }
