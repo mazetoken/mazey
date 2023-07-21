@@ -63,10 +63,11 @@
 		<h3>Bitcoin Cash <a href="https://cashtokens.org">CashTokens</a> mini wallet</h3>
 		<h3>on testnet</h3>
 		<p>It can be used locally, on a pendrive, SD card, floppy disk, etc.<br>
-			Clear local storage if the wallet is being used on someone else's device.
+			Clear local storage if the wallet is being used on someone else's device or if you want to create a new wallet.
 		</p>
-		<p>Use it at your own risk and with small amount of BCH.<br>
-			The wallet is under development. Viewing and sending NFT CashTokens is not fully implemented.
+		<p>The wallet also supports CRC20 CashTokens.</p>
+		<p>MAZEy wallet is under development. Viewing and sending NFT CashTokens is not fully implemented.<br>
+			Use it at your own risk and with small amount of BCH.
 		</p>
 		<br>
 		<hr>
@@ -80,6 +81,7 @@
 				<p>or</p>
 				<p><input id="importPrivateKey" type="text" size="50" placeholder="private key (WIF)"></p>
 				<p><button type="button" id="import">Import</button></p>
+				<p id="alert1"></p>
 			</div>
 		</div>
 		<hr>
@@ -105,6 +107,7 @@
 			<div class="content">
 				<p><button type="button" id="clear">Clear</button></p>
 				<p>The wallet will be deleted - the seed phrase / private key will be removed from the local storage of the browser.</p>
+				<p id="alert2"></p>
 			</div>
 		</div>
 		<hr>
@@ -156,6 +159,7 @@
 				<p><input id="sendAmount" type="text" size="50" placeholder="amount in satoshis"></p>
 				<p><button id="sendBCH">Send BCH</button></p>
 				<p id="bchsent"></p>
+				<img src id="imagetxid1" width="150"></p>
 			</div>
 		</div>
 		<hr>
@@ -167,6 +171,7 @@
 				<p><input id="sendTokenId" type="text" size="50" placeholder="tokenId"></p>
 				<p><button type="button" id="sendTokens">Send tokens</button></p>
 				<p id="ftsent"></p>
+				<img src id="imagetxid2" width="150"></p>
 			</div>
 		</div>
 		<hr>
@@ -178,6 +183,7 @@
 				<p><input id="nftCommitment" type="text" size="50" placeholder="NFT commitment"></p>
 				<p><button type="button" id="sendNfts">Send NFTs</button></p>
 				<p id="nftsent"></p>
+				<img src id="imagetxid3" width="150"></p>
 			</div>
 		</div>
 		<hr>
@@ -189,15 +195,15 @@
 				<p><button id="balancePw">Check paper wallet balance</button></p>
 				<p id="bchbalancePw"></p>
 				<p id="tokenbalancePw"></p>
-				<p>Before sweeping, you need to create a Mazey wallet or import an existing wallet into Mazey.<br>
-					Do not import paper wallet private key into Mazey.
-				</p>
-				<p><input id="sendAmountPw" type="text" size="50" placeholder="BCH balance in satoshis"></p>
+				<p>Before sweeping, you can create a Mazey wallet or import an existing wallet into Mazey or simply use your favorite BCH wallet address in the recipient field.</p>
+				<!-- <p><input id="sendAmountPw" type="text" size="50" placeholder="BCH balance in satoshis"></p>
 				<p><input id="sendTokenIdPw" type="text" size="50" placeholder="token Id"></p>
-				<p><input id="sendTokenAmountPw" type="text" size="50" placeholder="Token balance"></p>
-				<p><button id="sweepPw">Sweep tokens and BCH</button> * if paper wallet has tokens and BCH</p>
-				<p><button id="sweepPwBch">Sweep BCH</button> * if paper wallet has only BCH</p>
+				<p><input id="sendTokenAmountPw" type="text" size="50" placeholder="Token balance"></p> -->
+				<p><input id="recipientAddress" type="text" size="50" placeholder="recipient address bchtest:..."></p>
+				<p><button id="sweepPw">Sweep tokens and BCH</button> * if the paper wallet has tokens and BCH</p>
+				<p><button id="sweepPwBch">Sweep BCH</button> * if the paper wallet has only BCH</p>
 				<p id="swept"></p>
+				<img src id="imagetxid4" width="150"></p>
 			</div>
 		</div>
 		<hr>
@@ -230,13 +236,27 @@
 			</div>
 		</div>
 		<hr>
+		<div>
+			<button type="button" class="collapsible">Send a message in op_return</button>
+			<div class="content">
+				<p><input id="opmessage" type="text" size="50" placeholder="message"></p>
+				<p><button type="button" id="sendOp">Send</button></p>
+				<p id="opsent"></p>
+				<img src id="imagetxid5" width="150"></p>
+			</div>
+		</div>
+		<hr>
 		<br>
 		<footer>
 			<p><a href="https://github.com/mazetoken/mazey/">Github</a> | <a href="https://t.me/mazetokens/">Telegram</a></p>
-			<p>Check <a href="https://microfi.eu">Microfi Free Flow</a> CashTokens</p>
-			<p>Credits: <a href="https://mainnet.cash">mainnet.cash</a> | <a href="https://bcmr.paytaca.com/api/">Paytaca api</a> | <a href="https://gitlab.com/0353F40E/crc20-to-bcmr/-/blob/master/bcmr/bitcoin-cash-metadata-registry.json">crc2-to-bcmr</a></p>
+			<p>Check <a href="https://microfi.eu">Microfi Free Flow</a> CashTokens and<br>
+				<a href="https://mazetoken.github.io/darklabs/">Dark Labs</a> CRC20 CashTokens
+			</p>
+			<p>Credits: <a href="https://mainnet.cash">mainnet.cash</a> | <a href="https://cashonize.com">Cashonize</a> | <a href="https://bcmr.paytaca.com/api/">Paytaca api</a>
+				| <a href="https://gitlab.com/0353F40E/crc20-to-bcmr/-/blob/master/bcmr/bitcoin-cash-metadata-registry.json">crc2-to-bcmr</a> | <a href="https://www.figma.com/community/file/966199982810283152/Croodles---Doodle-your-face">Croodles</a>
+			</p>
 			<p>MAZEy on <a href="https://mazetoken.github.io/mazey/">mainnet</a></p>
-			<p>Mazey, 2023</p>
+			<p>Maze Tokens Underworld, 2023</p>
 		</footer>
 		<br>
 	</div>
@@ -259,7 +279,7 @@
 
 	<script>
 	document.addEventListener("DOMContentLoaded", async (event) => {
-		//globalThis.exports = globalThis.exports || {};
+		globalThis.exports = globalThis.exports || {};
 		Object.assign(globalThis, await __mainnetPromise);
 		DefaultProvider.servers.testnet = ["wss://chipnet.imaginary.cash:50004"]
 		//DefaultProvider.servers.testnet = ["wss://chipnet.c3-soft.com:64004"]
@@ -269,11 +289,12 @@
 		//Config.EnforceCashTokenReceiptAddresses = true;
 
 		document.getElementById("create").onclick = async () => {
-			//const wallet = await TestNetWallet.named("tmazey");
-			const wallet = await TestNetWallet.newRandom();
+			const wallet = await TestNetWallet.named("tmazey");
+			//const wallet = await TestNetWallet.newRandom();
 			localStorage.setItem("tseed", wallet.mnemonic);
 			localStorage.setItem("twif", wallet.privateKeyWif);
 			alert("Done. You can open the wallet. Save the seed phrase and private key.");
+			document.getElementById("alert1").textContent = "Done. You can open the wallet. Save the seed phrase and private key.";
 		};
 
 		document.getElementById("import").onclick = async () => {
@@ -282,6 +303,7 @@
 			const privatekey = document.querySelector("#importPrivateKey").value;
 			localStorage.setItem("twif", privatekey);
 			alert("Done. The wallet is imported. You can open the wallet.");
+			document.getElementById("alert1").textContent = "Done. The wallet is imported. You can open the wallet.";
 		}
 
 		document.getElementById("open").onclick = async () => {
@@ -323,6 +345,7 @@
 			localStorage.removeItem("tseed");
 			localStorage.removeItem("twif");
 			alert("Seed phrase / private key were removed. You have to import a wallet again.");
+			document.getElementById("alert2").textContent = "Seed phrase / private key were removed. You have to import a wallet again.";
 			location.reload();
 		}
 
@@ -387,6 +410,7 @@
 				}
 			]);
 			document.getElementById("bchsent").textContent = "txId: " + txId;
+			document.getElementById("imagetxid1").src = "https://api.dicebear.com/6.x/croodles/svg?seed=" + txId + "&backgroundColor=ffffff";
 			} catch (error) { alert(error) }
 		};
 
@@ -404,6 +428,7 @@
 				}
 			)]);
 			document.getElementById("ftsent").textContent = "txId: " + txId;
+			document.getElementById("imagetxid2").src = "https://api.dicebear.com/6.x/croodles/svg?seed=" + txId + "&backgroundColor=ffffff";
 			} catch (error) { alert(error) }
 		};
 
@@ -422,6 +447,7 @@
 				}
 			)]);
 			document.getElementById("nftsent").textContent = "txId: " + txId;
+			document.getElementById("imagetxid3").src = "https://api.dicebear.com/6.x/croodles/svg?seed=" + txId + "&backgroundColor=ffffff";
 			} catch (error) { alert(error) }
 		};
 
@@ -440,24 +466,45 @@
 			try {
 			var wallet = await TestNetWallet.named("tmazey");
 			const sweepPk = document.querySelector("#sweepPk").value;
-			const bchAmountPw = document.querySelector("#sendAmountPw").value;
-			const tokenIdPw = document.querySelector("#sendTokenIdPw").value;
-			const tokenAmountPw = document.querySelector("#sendTokenAmountPw").value;
+			//const bchAmountPw = document.querySelector("#sendAmountPw").value;
+			//const tokenIdPw = document.querySelector("#sendTokenIdPw").value;
+			//const tokenAmountPw = document.querySelector("#sendTokenAmountPw").value;
+			const recipientPw = document.querySelector("#recipientAddress").value;
 			var tempWallet = await TestNetWallet.fromWIF(sweepPk);
+			
+			let bchBalancePw = await tempWallet.getBalance();
+			bchBalanceObj = Object.values({...bchBalancePw});
+			//console.log(bchBalanceObj[1]);
+			let bchBal = bchBalanceObj[1];
+			
+			let tokensAddressBalancePw = await tempWallet.getAllTokenBalances();
+			tokenCategoriesObj = Object.keys({...tokensAddressBalancePw});
+			//console.log(tokenCategoriesObj[0]);
+			let tokenCat = tokenCategoriesObj[0];
+			tokenAmountsObj = Object.values({...tokensAddressBalancePw});
+			//console.log(tokenAmountsObj[0]);
+			let tokenAmo = tokenAmountsObj[0];
+
 				const { txId } = await tempWallet.send([
 					{
-					cashaddr: wallet.getDepositAddress(),
-					value: bchAmountPw - 800,
+					//cashaddr: wallet.getDepositAddress(),
+					//value: bchAmountPw - 800,
+					cashaddr: recipientPw,
+					value: bchBal - 800,
 					unit: "sat",
 					},
 					new TokenSendRequest(
 					{
-					cashaddr: wallet.getTokenDepositAddress(),
-					amount: tokenAmountPw,
-					tokenId: tokenIdPw,
+					//cashaddr: wallet.getTokenDepositAddress(),
+					//amount: tokenAmountPw,
+					//tokenId: tokenIdPw,
+					cashaddr: recipient,
+					amount: tokenAmo,
+					tokenId: tokenCat,
 					}),
 				]);
 			document.getElementById("swept").textContent = "txId: " + txId;
+			document.getElementById("imagetxid4").src = "https://api.dicebear.com/6.x/croodles/svg?seed=" + txId + "&backgroundColor=ffffff";
 			} catch (error) { alert(error) }
 		};
 
@@ -465,16 +512,24 @@
 			try {
 			var wallet = await TestNetWallet.named("tmazey");
 			const sweepPk = document.querySelector("#sweepPk").value;
-			const bchAmountPw = document.querySelector("#sendAmountPw").value;
+			//const bchAmountPw = document.querySelector("#sendAmountPw").value;
+			const recipientPw = document.querySelector("#recipientAddress").value;
 			var tempWallet = await TestNetWallet.fromWIF(sweepPk);
+			let bchBalancePw = await tempWallet.getBalance();
+			bchBalanceObj = Object.values({...bchBalancePw});
+			//console.log(bchBalanceObj[1]);
+			let bchBal = bchBalanceObj[1];
 				const { txId } = await tempWallet.send([
 					{
-					cashaddr: wallet.getDepositAddress(),
-					value: bchAmountPw - 546,
+					//cashaddr: wallet.getDepositAddress(),
+					//value: bchAmountPw - 546,
+					cashaddr: recipientPw,
+					value: bchBal - 546,
 					unit: "sat",
 					},
 				]);
 			document.getElementById("swept").textContent = "txId: " + txId;
+			document.getElementById("imagetxid4").src = "https://api.dicebear.com/6.x/croodles/svg?seed=" + txId + "&backgroundColor=ffffff";
 			} catch (error) { alert(error) }
 		};
 	});
@@ -511,6 +566,25 @@
 		someWallet = await TestNetWallet.watchOnly(vAddress);
 		verifyResult = await someWallet.verify(vAddress, signatureHash);
 		document.getElementById("verifyMessage").textContent = verifyResult.valid;
+		};
+	</script>
+
+	<script>
+		document.getElementById("sendOp").onclick = async () => {
+			try {
+			const opMessage = document.querySelector("#opmessage").value;
+			const wallet = await TestNetWallet.named("tmazey");
+			const { txId } = await wallet.send([ OpReturnData.from(opMessage) ]);
+			//OpReturnData.from("MEM" + opMessage),
+				//{ 
+				//cashaddr: wallet.getDepositAddress(),
+				//value: 546,
+				//unit: "sats"
+				//},
+			//]);
+			document.getElementById("opsent").textContent = "txId: " + txId;
+			document.getElementById("imagetxid5").src = "https://api.dicebear.com/6.x/croodles/svg?seed=" + txId + "&backgroundColor=ffffff";
+			} catch (error) { alert(error) }
 		};
 	</script>
 </body>
