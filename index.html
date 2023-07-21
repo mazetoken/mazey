@@ -154,9 +154,10 @@
 		<div>
 			<button type="button" class="collapsible">Send BCH</button>
 			<div class="content">
-				<p><input id="sendAddr" type="text" size="50" placeholder="bitcoincash:q... or bitcoincash:z..."></p>
+				<p><input id="sendAddr" type="text" size="50" placeholder="bitcoincash:..."></p>
 				<p><input id="sendAmount" type="text" size="50" placeholder="amount in satoshis"></p>
 				<p><button id="sendBCH">Send BCH</button></p>
+				<p><button id="sendBCHmax">Send the entire BCH balance</button></p>
 				<p id="bchsent"></p>
 				<img src id="imagetxid1" width="150"></p>
 			</div>
@@ -165,7 +166,7 @@
 		<div>
 			<button type="button" class="collapsible">Send fungible CashTokens</button>
 			<div class="content">
-				<p><input id="sendAddrToken" type="text" size="50" placeholder="bitcoincash:z..."></p>
+				<p><input id="sendAddrToken" type="text" size="50" placeholder="bitcoincash:..."></p>
 				<p><input id="sendAmountToken" type="text" size="50" placeholder="amount with decimal places eg. 10000 is 100 with 2 decimals"></p>
 				<p><input id="sendTokenId" type="text" size="50" placeholder="tokenId"></p>
 				<p><button type="button" id="sendTokens">Send tokens</button></p>
@@ -177,7 +178,7 @@
 		<div>
 			<button type="button" class="collapsible">Send NFT CashTokens</button>
 			<div class="content">
-				<p><input id="sendAddrToken1" type="text" size="50" placeholder="bitcoincash:z..."></p>
+				<p><input id="sendAddrToken1" type="text" size="50" placeholder="bitcoincash:..."></p>
 				<p><input id="sendNftTokenId" type="text" size="50" placeholder="tokenId"></p>
 				<p><input id="nftCommitment" type="text" size="50" placeholder="NFT commitment"></p>
 				<p><button type="button" id="sendNfts">Send NFTs</button></p>
@@ -194,13 +195,13 @@
 				<p><button id="balancePw">Check paper wallet balance</button></p>
 				<p id="bchbalancePw"></p>
 				<p id="tokenbalancePw"></p>
-				<p>Before sweeping, you can create a Mazey wallet or import an existing wallet into Mazey or simply use your favorite BCH wallet address in the recipient field.</p>
+				<p>Before sweeping, you can create a Mazey wallet or import an existing wallet into Mazey and paste the BCH address into the recipient field, or simply use your favorite BCH wallet address (which supports CashTokens) in the recipient field.</p>
 				<!-- <p><input id="sendAmountPw" type="text" size="50" placeholder="BCH balance in satoshis"></p>
 				<p><input id="sendTokenIdPw" type="text" size="50" placeholder="tokenId"></p>
 				<p><input id="sendTokenAmountPw" type="text" size="50" placeholder="Token balance"></p> -->
 				<p><input id="recipientAddress" type="text" size="50" placeholder="recipient address bitcoincash:..."></p>
-				<p><button id="sweepPw">Sweep tokens and BCH</button> * if paper wallet has tokens and BCH</p>
-				<p><button id="sweepPwBch">Sweep BCH</button> * if paper wallet has only BCH</p>
+				<p><button id="sweepPw">Sweep tokens and BCH</button> * if paper the wallet has tokens and BCH</p>
+				<p><button id="sweepPwBch">Sweep BCH</button> * if the paper wallet has only BCH</p>
 				<p id="swept"></p>
 				<img src id="imagetxid4" width="150"></p>
 			</div>
@@ -400,6 +401,26 @@
 			} catch (error) { alert(error) }
 		};
 
+		document.getElementById("sendBCHmax").onclick = async () => {
+			try {
+			const bchAddress = document.querySelector("#sendAddr").value;
+			const wallet = await Wallet.named("mazey");
+			let bchBalanceMax = await wallet.getBalance();
+			bchBalanceObj = Object.values({...bchBalanceMax});
+			//console.log(bchBalanceObj[1]);
+			let bchBalMax = bchBalanceObj[1];
+			const { txId } = await wallet.send([
+				{
+				cashaddr: bchAddress,
+				value: bchBalMax - 546,
+				unit: "sat",
+				}
+			]);
+			document.getElementById("bchsent").textContent = "https://explorer.bitcoinunlimited.info/tx/" + txId;
+			document.getElementById("imagetxid1").src = "https://api.dicebear.com/6.x/croodles/svg?seed=" + txId + "&backgroundColor=ffffff";
+			} catch (error) { alert(error) }
+		};
+
 		document.getElementById("sendTokens").onclick = async () => {
 			try {
 			const tokenAddress = document.querySelector("#sendAddrToken").value;
@@ -495,7 +516,7 @@
 
 		document.getElementById("sweepPwBch").onclick = async () => {
 			try {
-			var wallet = await Wallet.named("tmazey");
+			var wallet = await Wallet.named("mazey");
 			const sweepPk = document.querySelector("#sweepPk").value;
 			//const bchAmountPw = document.querySelector("#sendAmountPw").value;
 			const recipientPw = document.querySelector("#recipientAddress").value;

@@ -158,6 +158,7 @@
 				<p><input id="sendAddr" type="text" size="50" placeholder="bchtest:..."></p>
 				<p><input id="sendAmount" type="text" size="50" placeholder="amount in satoshis"></p>
 				<p><button id="sendBCH">Send BCH</button></p>
+				<p><button id="sendBCHmax">Send the entire BCH balance</button></p>
 				<p id="bchsent"></p>
 				<img src id="imagetxid1" width="150"></p>
 			</div>
@@ -195,13 +196,13 @@
 				<p><button id="balancePw">Check paper wallet balance</button></p>
 				<p id="bchbalancePw"></p>
 				<p id="tokenbalancePw"></p>
-				<p>Before sweeping, you can create a Mazey wallet or import an existing wallet into Mazey or simply use your favorite BCH wallet address in the recipient field.</p>
+				<p>Before sweeping, you can create a Mazey wallet or import an existing wallet into Mazey and paste the BCH address into the recipient field, or simply use your favorite BCH wallet address (which supports CashTokens) in the recipient field.</p>
 				<!-- <p><input id="sendAmountPw" type="text" size="50" placeholder="BCH balance in satoshis"></p>
 				<p><input id="sendTokenIdPw" type="text" size="50" placeholder="token Id"></p>
 				<p><input id="sendTokenAmountPw" type="text" size="50" placeholder="Token balance"></p> -->
 				<p><input id="recipientAddress" type="text" size="50" placeholder="recipient address bchtest:..."></p>
-				<p><button id="sweepPw">Sweep tokens and BCH</button> * if paper wallet has tokens and BCH</p>
-				<p><button id="sweepPwBch">Sweep BCH</button> * if paper wallet has only BCH</p>
+				<p><button id="sweepPw">Sweep tokens and BCH</button> * if the paper wallet has tokens and BCH</p>
+				<p><button id="sweepPwBch">Sweep BCH</button> * if the paper wallet has only BCH</p>
 				<p id="swept"></p>
 				<img src id="imagetxid4" width="150"></p>
 			</div>
@@ -406,6 +407,26 @@
 				{
 				cashaddr: bchAddress,
 				value: bchAmount,
+				unit: "sat",
+				}
+			]);
+			document.getElementById("bchsent").textContent = "https://chipnet.imaginary.cash/tx/" + txId;
+			document.getElementById("imagetxid1").src = "https://api.dicebear.com/6.x/croodles/svg?seed=" + txId + "&backgroundColor=ffffff";
+			} catch (error) { alert(error) }
+		};
+
+		document.getElementById("sendBCHmax").onclick = async () => {
+			try {
+			const bchAddress = document.querySelector("#sendAddr").value;
+			const wallet = await TestNetWallet.named("tmazey");
+			let bchBalanceMax = await wallet.getBalance();
+			bchBalanceObj = Object.values({...bchBalanceMax});
+			//console.log(bchBalanceObj[1]);
+			let bchBalMax = bchBalanceObj[1];
+			const { txId } = await wallet.send([
+				{
+				cashaddr: bchAddress,
+				value: bchBalMax - 546,
 				unit: "sat",
 				}
 			]);

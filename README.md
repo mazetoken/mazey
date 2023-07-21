@@ -8,6 +8,6 @@ or check https://mazetoken.github.io/mazey/
 
 testnet https://mazetoken.github.io/mazey/testnet/
 
-index.html SHA256: D6BBE9362BD5F2653C39131690B0619AFB70F472BF58B2B98CA0EB8D6DE2A10D
+index.html SHA256: C03CF8478513346D722358AF547C017C01CA6DF821C9DEA27B48A1E23D9066D0
 
 The wallet seed phrase / private key is stored in the local storage of the browser on your device
