@@ -4,7 +4,7 @@
   	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
   	<title>Mazey wallet</title>
-	<meta name="description" content="Mazey Bitcoin Cash CashTokens mini wallet">
+	<meta name="description" content="Mazey Bitcoin Cash CashTokens experimental wallet">
   	<meta name="web" content="https://mazetoken.github.io/mazey/">
 	<style>
 		body {
@@ -60,12 +60,12 @@
 <body>
 	<div>
 		<h1>MAZEy</h1>
-		<h3>Bitcoin Cash <a href="https://cashtokens.org">CashTokens</a> mini wallet</h3>
-		<p>It can be used locally, on a pendrive, SD card, floppy disk, etc.<br>
+		<h3>Bitcoin Cash <a href="https://cashtokens.org">CashTokens</a> experimental wallet</h3>
+		<p>MAZEy can be used locally, on a pendrive, SD card, floppy disk, etc.<br>
 			Clear local storage if the wallet is being used on someone else's device or if you want to create a new wallet.
 		</p>
 		<p>The wallet also supports <a href="https://crc20.cash">CRC20</a> CashTokens. You can import the BCH wallet private key derived from your MetaMask account.</p>
-		<p>MAZEy wallet is under development. Viewing and sending NFT CashTokens is not fully implemented.<br>
+		<p>MAZEy wallet is under development. Viewing, sending and burning NFT CashTokens is not fully implemented.<br>
 			Use it at your own risk and with small amount of BCH.
 		</p>
 		<br>
@@ -88,15 +88,18 @@
 			<button type="button" class="collapsible">Open wallet</button>
 			<div class="content">
 				<p><button type="button" id="open">Open</button></p>
-				<p id="bchaddress2"></p> 
-				<p id="cashtokensaddress2"></p>
-				<p id="bchbalance2"></p>
-				<p id="mnemonic2"></p>
-				<p id="derivation2"></p>
-				<p id="privatekey2"></p>
-				<p id="tokens2"></p>
-				<p id="nfts2"></p>
-				<p>To update your balances, refresh the page and open the wallet again.</p>
+				<p id="bchaddress"></p>
+				<p id="walletPubKey"></p>
+				<p id="cashtokensaddress"></p>
+				<p id="bchbalance"></p>
+				<p id="derivation"></p>
+				<p id="mnemonic"></p>
+				<p id="privatekey"></p>
+				<p id="tokens"></p>
+				<p id="nfts"></p>
+				<p>To update your balances, refresh the page and open the wallet again.<br>
+					View token details below.
+				</p>
 				<p><button type="button" id="refresh">Refresh</button></p>
 			</div>
 		</div>
@@ -113,40 +116,29 @@
 		<div>
 			<button type="button" class="collapsible">View token details</button>
 			<div class="content">
+				<p>Paste tokenId (category).<p>
+				<p><input id="viewTokenId" type="text" size="50" placeholder="tokenId"></p>
+				<p>Use corresponding (View) buttons.</p>
+				<p><button type="button" id="viewTokens1">View - AuthChain</button> * wait a few seconds</p>
+				<p><button type="button" id="viewTokens2">View - Paytaca Api</button></p>
 				<p>Choose metadata registry from the list.<br>
-					If custom BCMR is selected, paste url in the input field.
-				</p>
+					If custom BCMR is selected, paste url in the input field.</p>
 				<select id="bcmrList">
+					<option value="https://mazetoken.github.io/.well-known/crc20tobcmr.json">CRC20-to-BCMR</option>
 					<option value="https://mazetoken.github.io/.well-known/bitcoin-cash-metadata-registry.json">Maze Token MTU BCMR</option>
 					<option value="https://mazetoken.github.io/darklabs/bcmr/darklabsbcmr.json">Dark Labs CRC20 BCMR</option>
-					<option value="https://mazetoken.github.io/.well-known/crc20tobcmr.json">CRC20-to-BCMR</option>
-					<option value="https://otr.cash/.well-known/bitcoin-cash-metadata-registry.json">Open Token Registry</option>
+					<option value="https://otr.cash/.well-known/bitcoin-cash-metadata-registry.json">Open Token Registry BCMR</option>
 					<option value="">custom BCMR</option>
 				</select>
 				<p><input id="bcmrCustom" type="text" size="50" placeholder="custom BCMR"></p>
-				<p><input id="viewTokenId" type="text" size="50" placeholder="tokenId"></p>
-				<p><button type="button" id="viewTokens">View</button></p>
-				<p id="tokencategory3"></p>
-				<p id="tokenname3"></p>
-				<p id="tokensymbol3"></p>
-				<p id="tokendecimals3"></p>
-				<p id="tokendescription3"></p>
-				<img src id="tokenicon3" width="150"></p>
-			
-				<p>on-chain BCMR (AuthChain)</p>
-				<p><input id="viewTokenId1" type="text" size="50" placeholder="tokenId"></p>
-				<p><button type="button" id="viewTokens1">View</button></p>
-				<p><i>Wait a few seconds</i></p>
-				<p id="tokencategory4"></p>
-				<p id="tokenname4"></p>
-				<p id="tokensymbol4"></p>
-				<p id="tokendecimals4"></p>
-				<p id="tokendescription4"></p>
-				<img src id="tokenicon4" width="150"></p>
-
-				<p>Paytaca api</p>
-				<p><input id="viewTokenId2" type="text" size="50" placeholder="tokenId"></p>
-				<p><button type="button" id="viewTokens2">View</button></p>
+				<p><button type="button" id="viewTokens3">View - BCMR list</button></p>
+				<p id="tokencategory"></p>
+				<p id="tokenname"></p>
+				<p id="tokensymbol"></p>
+				<p id="tokendecimals"></p>
+				<p id="tokendescription"></p>
+				<img src id="tokenicon" width="200"></p>
+				<p id="explorer"></p>
 				<p id="tokenapi"></p>
 			</div>
 		</div>
@@ -159,7 +151,7 @@
 				<p><button id="sendBCH">Send BCH</button></p>
 				<p><button id="sendBCHmax">Send the entire BCH balance</button></p>
 				<p id="bchsent"></p>
-				<img src id="imagetxid1" width="150"></p>
+				<!-- <img src id="imagetxid1" width="150"></p> -->
 			</div>
 		</div>
 		<hr>
@@ -167,11 +159,11 @@
 			<button type="button" class="collapsible">Send fungible CashTokens</button>
 			<div class="content">
 				<p><input id="sendAddrToken" type="text" size="50" placeholder="bitcoincash:..."></p>
-				<p><input id="sendAmountToken" type="text" size="50" placeholder="amount with decimal places eg. 10000 is 100 with 2 decimals"></p>
+				<p><input id="sendAmountToken" type="text" size="50" placeholder="amount with decimals e.g. 10000 is 100 with 2 decimals"></p>
 				<p><input id="sendTokenId" type="text" size="50" placeholder="tokenId"></p>
 				<p><button type="button" id="sendTokens">Send tokens</button></p>
 				<p id="ftsent"></p>
-				<img src id="imagetxid2" width="150"></p>
+				<!-- <img src id="imagetxid2" width="150"></p> -->
 			</div>
 		</div>
 		<hr>
@@ -183,7 +175,29 @@
 				<p><input id="nftCommitment" type="text" size="50" placeholder="NFT commitment"></p>
 				<p><button type="button" id="sendNfts">Send NFTs</button></p>
 				<p id="nftsent"></p>
-				<img src id="imagetxid3" width="150"></p>
+				<!-- <img src id="imagetxid3" width="150"></p> -->
+			</div>
+		</div>
+		<hr>
+		<div>
+			<button type="button" class="collapsible">Burn tokens</button>
+			<div class="content">
+				<p><input id="burnTokenId" type="text" size="50" placeholder="tokenId (category)"></p>
+				<p><input id="burnAmount" type="text" size="50" placeholder="amount"></p>
+				<p><button type="button" id="burnFt">Burn fungible tokens</button></p>
+				<p id="burnFtTx"></p>
+				<p><input id="burnNftId" type="text" size="50" placeholder="NFT tokenId (category)"></p>
+				<!-- <p><input id="burnNftAmount" type="text" size="50" placeholder="amount"></p> -->
+				<p><input id="burnCommitment" type="text" size="50" placeholder="NFT commitment (hex)"></p>
+				<!-- <select id="capabilityList">
+					<option value="NFTCapability.none">Immutable</option>
+					<option value="NFTCapability.minting">Minting</option>
+					<option value="NFTCapability.mutable">Mutable</option>
+				</select>
+				<p>* choose NFT capability from the list</p> -->
+				<p><button type="button" id="burnNft">Burn NFT</button></p>
+				<p id="burnNftTx"></p>
+				<!-- <img src id="imagetxid3" width="150"></p> -->
 			</div>
 		</div>
 		<hr>
@@ -196,14 +210,22 @@
 				<p id="bchbalancePw"></p>
 				<p id="tokenbalancePw"></p>
 				<p>Before sweeping, you can create a Mazey wallet or import an existing wallet into Mazey and paste the BCH address into the recipient field, or simply use your favorite BCH wallet address (which supports CashTokens) in the recipient field.</p>
-				<!-- <p><input id="sendAmountPw" type="text" size="50" placeholder="BCH balance in satoshis"></p>
-				<p><input id="sendTokenIdPw" type="text" size="50" placeholder="tokenId"></p>
-				<p><input id="sendTokenAmountPw" type="text" size="50" placeholder="Token balance"></p> -->
 				<p><input id="recipientAddress" type="text" size="50" placeholder="recipient address bitcoincash:..."></p>
 				<p><button id="sweepPw">Sweep tokens and BCH</button> * if paper the wallet has tokens and BCH</p>
 				<p><button id="sweepPwBch">Sweep BCH</button> * if the paper wallet has only BCH</p>
 				<p id="swept"></p>
-				<img src id="imagetxid4" width="150"></p>
+				<!-- <img src id="imagetxid4" width="150"></p> -->
+			</div>
+		</div>
+		<hr>
+		<div>
+			<button type="button" class="collapsible">Watch wallet</button>
+			<div class="content">
+				<p><input id="wAddress" type="text" size="50" placeholder="bitcoincash:..."></p>
+				<p><button type="button" id="spy">Watch wallet balances</button></p>
+				<p id="wbchbalance"></p>
+				<p id="wtokens"></p>
+				<p id="wnfts"></p>
 			</div>
 		</div>
 		<hr>
@@ -239,12 +261,14 @@
 		<br>
 		<footer>
 			<p><a href="https://github.com/mazetoken/mazey/">Github</a> | <a href="https://t.me/mazetokens/">Telegram</a></p>
-			<p>Check:<br><a href="https://microfi.eu">Microfi Free Flow</a> CashTokens<br>
+			<p>Powered by <br><a href="https://microfi.eu">Microfi Free Flow</a> CashTokens</p>
+			<p>Check:<br>
 				<a href="https://mazetoken.github.io/darklabs/">Dark Labs</a> CRC20 CashTokens<br>
 				<a href="https://tapswap.cash/trade/4b53fb421e760fa3d6d1250b921a7833a6dad04e3566314164059aa0afd987d6">The Legendary Zombie Government</a> CashTokens NFTs
 			</p>
 			<p>Credits: <a href="https://mainnet.cash">mainnet.cash</a> | <a href="https://cashonize.com">Cashonize</a> | <a href="https://bcmr.paytaca.com/api/">Paytaca api</a>
-				| <a href="https://gitlab.com/0353F40E/crc20-to-bcmr/-/blob/master/bcmr/bitcoin-cash-metadata-registry.json">crc2-to-bcmr</a> | <a href="https://www.figma.com/community/file/966199982810283152/Croodles---Doodle-your-face">Croodles</a>
+				| <a href="https://gitlab.com/0353F40E/crc20-to-bcmr/-/blob/master/bcmr/bitcoin-cash-metadata-registry.json">crc2-to-bcmr</a>
+				<!-- | <a href="https://www.figma.com/community/file/966199982810283152/Croodles---Doodle-your-face">Croodles</a> -->
 			</p>
 			<p>MAZEy on <a href="https://mazetoken.github.io/mazey/testnet/">testnet</a></p>
 			<p>Maze Tokens Underworld, 2023</p>
@@ -273,12 +297,10 @@
 		globalThis.exports = globalThis.exports || {};
 		Object.assign(globalThis, await __mainnetPromise);
 		Config.DefaultParentDerivationPath = "m/44'/145'/0'/0/0";
-		//Config.DefaultParentDerivationPath = "m/44'/145'/0'";
 		//Config.EnforceCashTokenReceiptAddresses = true;
 
 		document.getElementById("create").onclick = async () => {
 			const wallet = await Wallet.named("mazey");
-			//const wallet = await Wallet.newRandom();
 			localStorage.setItem("seed", wallet.mnemonic);
 			localStorage.setItem("wif", wallet.privateKeyWif);
 			alert("Done. You can open the wallet. Save the seed phrase and private key.");
@@ -298,7 +320,6 @@
 			var wallet = await Wallet.named("mazey");
 			const sd = localStorage.getItem("seed");
 			const derivationPath = "m/44'/145'/0'/0/0";
-			//const derivationPath = "m/44'/145'/0'";
 			var walletId1 = `seed:mainnet:${sd}:${derivationPath}`;
 			const pk = localStorage.getItem("wif");
 			var walletId2 = `wif:mainnet:${pk}`;
@@ -307,20 +328,22 @@
 			} else if (wallet = pk) {
 				var wallet = await Wallet.replaceNamed("mazey", walletId2);
 			}
+			const bchAddress = await wallet.getDepositAddress();
+			const walletPubKey = wallet.getPublicKey(true);
 			const tokenAddress = await wallet.getTokenDepositAddress();
+			let bchBalance = await wallet.getBalance();
 			let tokensAddressBalance = await wallet.getAllTokenBalances();
 			let nftsAddressBalance = await wallet.getAllNftTokenBalances();
-			const bchAddress = await wallet.getDepositAddress();
-			let bchBalance = await wallet.getBalance();
 			
-			document.getElementById("bchaddress2").textContent = "BCH address: " + bchAddress;
-			document.getElementById("cashtokensaddress2").textContent = "CashTokens address: " + tokenAddress;
-			document.getElementById("bchbalance2").textContent = "BCH balance: " + JSON.stringify(bchBalance);
-			document.getElementById("mnemonic2").textContent = "Seed phrase: " + wallet.mnemonic;
-			document.getElementById("derivation2").textContent = "Derivation path: " + wallet.derivationPath;
-			document.getElementById("privatekey2").textContent ="Private key: " + wallet.privateKeyWif;
-			document.getElementById("tokens2").textContent = "Tokens: " + JSON.stringify(tokensAddressBalance, null, "\t");
-			document.getElementById("nfts2").textContent = "NFTs: " + JSON.stringify(nftsAddressBalance, null, "\t");
+			document.getElementById("bchaddress").textContent = "BCH address: " + bchAddress;
+			document.getElementById("walletPubKey").textContent = "PubKey (hex): " + walletPubKey;
+			document.getElementById("cashtokensaddress").textContent = "CashTokens address: " + tokenAddress;
+			document.getElementById("bchbalance").textContent = "BCH balance: " + JSON.stringify(bchBalance);
+			document.getElementById("derivation").textContent = "Derivation path: " + wallet.derivationPath;
+			document.getElementById("mnemonic").textContent = "Seed phrase: " + wallet.mnemonic;
+			document.getElementById("privatekey").textContent ="Private key: " + wallet.privateKeyWif;
+			document.getElementById("tokens").textContent = "tokenId(category): amount: " + JSON.stringify(tokensAddressBalance, null, "\t");
+			document.getElementById("nfts").textContent = "NFT Id(category): amount: " + JSON.stringify(nftsAddressBalance, null, "\t");
 		};
 
 		document.getElementById("refresh").onclick = async () => {
@@ -337,52 +360,58 @@
 			location.reload();
 		}
 
-		document.getElementById("viewTokens").onclick = async () => {
-			const bcmrList = document.querySelector("#bcmrList").value;
-			const bcmrCustom = document.querySelector("#bcmrCustom").value;
-			if (bcmrUrl = bcmrList) {
-			await BCMR.addMetadataRegistryFromUri(bcmrList);
-			} else if (bcmrUrl = bcmrCustom) {
-			await BCMR.addMetadataRegistryFromUri(bcmrCustom);
-			}
-			const viewTokenId = document.querySelector("#viewTokenId").value;
-			const tokenInfo = BCMR.getTokenInfo(viewTokenId);
-			document.getElementById("tokencategory3").textContent = "Category/tokenId: " + tokenInfo.token.category;
-			document.getElementById("tokenname3").textContent = "Name: " + tokenInfo.name;
-			document.getElementById("tokensymbol3").textContent = "Symbol: " + tokenInfo.token.symbol;
-			document.getElementById("tokendecimals3").textContent = "Decimals: " + tokenInfo.token.decimals;
-			document.getElementById("tokendescription3").textContent = "Description: " + tokenInfo.description;
-			document.getElementById("tokenicon3").src = tokenInfo.uris.icon;
-		};
-
 		document.getElementById("viewTokens1").onclick = async () => {
-			const viewTokenId1 = document.querySelector("#viewTokenId1").value;
+			const viewTokenId = document.querySelector("#viewTokenId").value;
 			const authChain = await BCMR.buildAuthChain({
-				transactionHash: viewTokenId1,
+				transactionHash: viewTokenId,
 				followToHead: true
-			});
-			if (authChain[0]) {
+			})
+			if (authChain[1]) {
 			try {
-				await BCMR.addMetadataRegistryFromUri(authChain[0].httpsUrl);
+				await BCMR.addMetadataRegistryFromUri(authChain[1].httpsUrl);
 			} catch (error) { alert(error) }
 			}
-			const tokenInfo = BCMR.getTokenInfo(viewTokenId1);
-			document.getElementById("tokencategory4").textContent = "Category/tokenId: " + tokenInfo.token.category;
-			document.getElementById("tokenname4").textContent = "Name: " + tokenInfo.name;
-			document.getElementById("tokensymbol4").textContent = "Symbol: " + tokenInfo.token.symbol;
-			document.getElementById("tokendecimals4").textContent = "Decimals: " + tokenInfo.token.decimals;
-			document.getElementById("tokendescription4").textContent = "Description: " + tokenInfo.description;
-			document.getElementById("tokenicon4").src = tokenInfo.uris.icon;
+			const tokenInfo = BCMR.getTokenInfo(viewTokenId);
+			document.getElementById("tokencategory").textContent = "Category/tokenId: " + tokenInfo.token.category;
+			document.getElementById("tokenname").textContent = "Name: " + tokenInfo.name;
+			document.getElementById("tokensymbol").textContent = "Symbol: " + tokenInfo.token.symbol;
+			document.getElementById("tokendecimals").textContent = "Decimals: " + tokenInfo.token.decimals;
+			document.getElementById("tokendescription").textContent = "Description: " + tokenInfo.description;
+			document.getElementById("tokenicon").src = tokenInfo.uris.icon;
+			document.getElementById("explorer").textContent = "https://explorer.salemkode.com/token/" + viewTokenId;
 		};
 
 		document.getElementById("viewTokens2").onclick = async () => {
-			const viewTokenId2 = document.querySelector("#viewTokenId2").value;
-			const apiUrl = "https://bcmr.paytaca.com/api/tokens/" + viewTokenId2;
+			const viewTokenId = document.querySelector("#viewTokenId").value;
+			const apiUrl = "https://bcmr.paytaca.com/api/tokens/" + viewTokenId;
+			const explorer = "https://explorer.salemkode.com/token/" + viewTokenId;
 			fetch(apiUrl)
 				.then(response => response.json())
-				.then(data => document.getElementById("tokenapi").textContent = 
-				data.name + " " + data.token.symbol + " " + "| Decimals: " + data.token.decimals + " " + "| Description: " + data.description + " " + " " + "| Web: " + data.uris.web + " " + "| Icon: " + data.uris.icon
-				);
+				.then(data => document.getElementById("tokenapi").textContent = "Name: " + data.name + " " + "| Symbol: " + data.token.symbol + " " + "| Decimals: " + data.token.decimals + " " + "| Description: " + data.description + " " + " " + "| Web: " + data.uris.web + " " + "| Icon: " + data.uris.icon + " " + explorer);
+		};
+
+		document.getElementById("viewTokens3").onclick = async () => {
+			const viewTokenId = document.querySelector("#viewTokenId").value;
+			const bcmrList = document.querySelector("#bcmrList").value;
+			if (bcmrUrl = bcmrList) {
+			try {
+				await BCMR.addMetadataRegistryFromUri(bcmrList);
+			} catch (error) { alert(error) }
+			}
+			const bcmrCustom = document.querySelector("#bcmrCustom").value;
+			if (bcmrUrl = bcmrCustom) {
+			try {
+				await BCMR.addMetadataRegistryFromUri(bcmrCustom);
+			} catch (error) { alert(error) }
+			}
+			const tokenInfo = BCMR.getTokenInfo(viewTokenId);
+			document.getElementById("tokencategory").textContent = "Category/tokenId: " + tokenInfo.token.category;
+			document.getElementById("tokenname").textContent = "Name: " + tokenInfo.name;
+			document.getElementById("tokensymbol").textContent = "Symbol: " + tokenInfo.token.symbol;
+			document.getElementById("tokendecimals").textContent = "Decimals: " + tokenInfo.token.decimals;
+			document.getElementById("tokendescription").textContent = "Description: " + tokenInfo.description;
+			document.getElementById("tokenicon").src = tokenInfo.uris.icon;
+			document.getElementById("explorer").textContent = "https://explorer.salemkode.com/token/" + viewTokenId;
 		};
 
 		document.getElementById("sendBCH").onclick = async () => {
@@ -390,15 +419,9 @@
 			const bchAddress = document.querySelector("#sendAddr").value;
 			const bchAmount = document.querySelector("#sendAmount").value;
 			const wallet = await Wallet.named("mazey");
-			const { txId } = await wallet.send([
-				{
-				cashaddr: bchAddress,
-				value: bchAmount,
-				unit: "sat"
-				}
-			]);
+			const { txId } = await wallet.send([{ cashaddr: bchAddress, value: bchAmount, unit: "sats" }]);
 			document.getElementById("bchsent").textContent = "https://explorer.bitcoinunlimited.info/tx/" + txId;
-			document.getElementById("imagetxid1").src = "https://api.dicebear.com/6.x/croodles/svg?seed=" + txId + "&backgroundColor=ffffff";
+			//document.getElementById("imagetxid1").src = "https://api.dicebear.com/6.x/croodles/svg?seed=" + txId + "&backgroundColor=ffffff";
 			} catch (error) { alert(error) }
 		};
 
@@ -408,17 +431,10 @@
 			const wallet = await Wallet.named("mazey");
 			let bchBalanceMax = await wallet.getBalance();
 			bchBalanceObj = Object.values({...bchBalanceMax});
-			//console.log(bchBalanceObj[1]);
 			let bchBalMax = bchBalanceObj[1];
-			const { txId } = await wallet.send([
-				{
-				cashaddr: bchAddress,
-				value: bchBalMax - 546,
-				unit: "sat",
-				}
-			]);
+			const { txId } = await wallet.send([{ cashaddr: bchAddress, value: bchBalMax - 546, unit: "sats", }]);
 			document.getElementById("bchsent").textContent = "https://explorer.bitcoinunlimited.info/tx/" + txId;
-			document.getElementById("imagetxid1").src = "https://api.dicebear.com/6.x/croodles/svg?seed=" + txId + "&backgroundColor=ffffff";
+			//document.getElementById("imagetxid1").src = "https://api.dicebear.com/6.x/croodles/svg?seed=" + txId + "&backgroundColor=ffffff";
 			} catch (error) { alert(error) }
 		};
 
@@ -428,15 +444,9 @@
 			const tokenAmount = document.querySelector("#sendAmountToken").value;
 			const token = document.querySelector("#sendTokenId").value;
 			const wallet = await Wallet.named("mazey");
-			const { txId } = await wallet.send([new TokenSendRequest(
-				{
-				cashaddr: tokenAddress,
-				amount: tokenAmount,
-				tokenId: token
-				}
-			)]);
+			const { txId } = await wallet.send([new TokenSendRequest({ cashaddr: tokenAddress, amount: tokenAmount, tokenId: token })]);
 			document.getElementById("ftsent").textContent = "https://explorer.bitcoinunlimited.info/tx/" + txId;
-			document.getElementById("imagetxid2").src = "https://api.dicebear.com/6.x/croodles/svg?seed=" + txId + "&backgroundColor=ffffff";
+			//document.getElementById("imagetxid2").src = "https://api.dicebear.com/6.x/croodles/svg?seed=" + txId + "&backgroundColor=ffffff";
 			} catch (error) { alert(error) }
 		};
 
@@ -446,16 +456,48 @@
 			const token1 = document.querySelector("#sendNftTokenId").value;
 			const nftCommitment = document.querySelector("#nftCommitment").value;
 			const wallet = await Wallet.named("mazey");
-			const { txId } = await wallet.send([new TokenSendRequest(
-				{
-				cashaddr: tokenAddress,
-				tokenId: token1,
-				commitment: nftCommitment,
-				capability: NFTCapability.none
-				}
-			)]);
+			const { txId } = await wallet.send([new TokenSendRequest({ cashaddr: tokenAddress, tokenId: token1, commitment: nftCommitment, capability: NFTCapability.none })]);
 			document.getElementById("nftsent").textContent = "https://explorer.bitcoinunlimited.info/tx/" + txId;
-			document.getElementById("imagetxid3").src = "https://api.dicebear.com/6.x/croodles/svg?seed=" + txId + "&backgroundColor=ffffff";
+			//document.getElementById("imagetxid3").src = "https://api.dicebear.com/6.x/croodles/svg?seed=" + txId + "&backgroundColor=ffffff";
+			} catch (error) { alert(error) }
+		};
+
+		document.getElementById("burnFt").onclick = async () => {
+			try {
+			const wallet = await Wallet.named("mazey");
+			const burnTokenId = document.querySelector("#burnTokenId").value;
+			const burnAmount = document.querySelector("#burnAmount").value;
+			const burnResponse = await wallet.tokenBurn(
+				{
+					tokenId: burnTokenId,
+					amount: burnAmount
+				},
+				"burn",
+				);
+			const { txId } = burnResponse;
+			document.getElementById("burnFtTx").textContent = "https://explorer.bitcoinunlimited.info/tx/" + txId;
+			} catch (error) { alert(error) }
+		};
+
+		document.getElementById("burnNft").onclick = async () => {
+			try {
+			const wallet = await Wallet.named("mazey");
+			const burnNftTokenId = document.querySelector("#burnNftId").value;
+			//const burnNftAmount = document.querySelector("#burnNftAmount").value;
+			//const capabilityList = document.querySelector("#capabilityList").value;
+			const burnCommitment = document.querySelector("#burnCommitment").value;
+			const burnResponse = await wallet.tokenBurn(
+				{
+					tokenId: burnNftTokenId,
+					//amount: burnNftAmount,
+					capability: NFTCapability.none,
+					//capability: capabilityList,
+    				commitment: burnCommitment,
+				},
+				"burn",
+				);
+			const { txId } = burnResponse;
+			document.getElementById("burnNftTx").textContent = "https://explorer.bitcoinunlimited.info/tx/" + txId;
 			} catch (error) { alert(error) }
 		};
 
@@ -474,44 +516,31 @@
 			try {
 			var wallet = await Wallet.named("mazey");
 			const sweepPk = document.querySelector("#sweepPk").value;
-			//const bchAmountPw = document.querySelector("#sendAmountPw").value;
-			//const tokenIdPw = document.querySelector("#sendTokenIdPw").value;
-			//const tokenAmountPw = document.querySelector("#sendTokenAmountPw").value;
 			const recipientPw = document.querySelector("#recipientAddress").value;
 			var tempWallet = await Wallet.fromWIF(sweepPk);
-			
 			let bchBalancePw = await tempWallet.getBalance();
 			bchBalanceObj = Object.values({...bchBalancePw});
-			//console.log(bchBalanceObj[1]);
 			let bchBal = bchBalanceObj[1];
-			
 			let tokensAddressBalancePw = await tempWallet.getAllTokenBalances();
 			tokenCategoriesObj = Object.keys({...tokensAddressBalancePw});
-			//console.log(tokenCategoriesObj[0]);
 			let tokenCat = tokenCategoriesObj[0];
 			tokenAmountsObj = Object.values({...tokensAddressBalancePw});
-			//console.log(tokenAmountsObj[0]);
 			let tokenAmo = tokenAmountsObj[0];
-				const { txId } = await tempWallet.send([
-					{
-					//cashaddr: wallet.getDepositAddress(),
-					//value: bchAmountPw - 800,
-					cashaddr: recipientPw,
-					value: bchBal - 800,
-					unit: "sat",
-					},
-					new TokenSendRequest(
-					{
-					//cashaddr: wallet.getTokenDepositAddress(),
-					//amount: tokenAmountPw,
-					//tokenId: tokenIdPw,
-					cashaddr: recipientPw,
-					amount: tokenAmo,
-					tokenId: tokenCat,
-					}),
-				]);
+			const { txId } = await tempWallet.send([
+				{
+				cashaddr: recipientPw,
+				value: bchBal - 800,
+				unit: "sats",
+				},
+				new TokenSendRequest(
+				{
+				cashaddr: recipientPw,
+				amount: tokenAmo,
+				tokenId: tokenCat,
+				}),
+			]);
 			document.getElementById("swept").textContent = "https://explorer.bitcoinunlimited.info/tx/" + txId;
-			document.getElementById("imagetxid4").src = "https://api.dicebear.com/6.x/croodles/svg?seed=" + txId + "&backgroundColor=ffffff";
+			//document.getElementById("imagetxid4").src = "https://api.dicebear.com/6.x/croodles/svg?seed=" + txId + "&backgroundColor=ffffff";
 			} catch (error) { alert(error) }
 		};
 
@@ -519,60 +548,69 @@
 			try {
 			var wallet = await Wallet.named("mazey");
 			const sweepPk = document.querySelector("#sweepPk").value;
-			//const bchAmountPw = document.querySelector("#sendAmountPw").value;
 			const recipientPw = document.querySelector("#recipientAddress").value;
 			var tempWallet = await Wallet.fromWIF(sweepPk);
 			let bchBalancePw = await tempWallet.getBalance();
 			bchBalanceObj = Object.values({...bchBalancePw});
-			//console.log(bchBalanceObj[1]);
 			let bchBal = bchBalanceObj[1];
-				const { txId } = await tempWallet.send([
-					{
-					//cashaddr: wallet.getDepositAddress(),
-					//value: bchAmountPw - 546,
-					cashaddr: recipientPw,
-					value: bchBal - 546,
-					unit: "sat",
-					},
-				]);
+			const { txId } = await tempWallet.send([
+				{
+				cashaddr: recipientPw,
+				value: bchBal - 546,
+				unit: "sats",
+				},
+			]);
 			document.getElementById("swept").textContent = "https://explorer.bitcoinunlimited.info/tx/" + txId;
-			document.getElementById("imagetxid4").src = "https://api.dicebear.com/6.x/croodles/svg?seed=" + txId + "&backgroundColor=ffffff";
+			//document.getElementById("imagetxid4").src = "https://api.dicebear.com/6.x/croodles/svg?seed=" + txId + "&backgroundColor=ffffff";
 			} catch (error) { alert(error) }
 		};
 	});
 	</script>
 
 	<script>
+		document.getElementById("spy").onclick = async () => {
+			const wAddress = document.querySelector("#wAddress").value;
+			const wallet = await Wallet.watchOnly(wAddress);
+			let wbchBalance = await wallet.getBalance();
+			let wtokensAddressBalance = await wallet.getAllTokenBalances();
+			let wnftsAddressBalance = await wallet.getAllNftTokenBalances();
+			document.getElementById("wbchbalance").textContent = "BCH balance: " + JSON.stringify(wbchBalance);
+			document.getElementById("wtokens").textContent = "tokenId(category): amount: " + JSON.stringify(wtokensAddressBalance, null, "\t");
+			document.getElementById("wnfts").textContent = "NFT Id(category): amount: " + JSON.stringify(wnftsAddressBalance, null, "\t");
+		};
+	</script>
+
+	<script>
 		document.getElementById("createPaymentRequest").onclick = async () => {
-		const pAddress = document.querySelector("#address").value;
-		const pAmount = document.querySelector("#amount").value;
-		const pLabel = document.querySelector("#label").value;
-		const pUrl = pAddress + "?amount=" + pAmount + "&label=" + pLabel;">";
-		document.getElementById("payurl").textContent = pUrl;
-		//location.href = pUrl;
+			const pAddress = document.querySelector("#address").value;
+			const pAmount = document.querySelector("#amount").value;
+			const pLabel = document.querySelector("#label").value;
+			const pUrl = pAddress + "?amount=" + pAmount + "&label=" + pLabel;">";
+			document.getElementById("payurl").textContent = pUrl;
+			//location.href = pUrl;
 		};
 		document.getElementById("usePaymentRequest").onclick = async () => {
-		const uPayUrl = document.querySelector("#upayurl").value;
-		//const upUrl = uPayUrl;
-		document.getElementById("usepayurl").textContent = uPayUrl;
-		location.href = uPayUrl;
+			const uPayUrl = document.querySelector("#upayurl").value;
+			//const upUrl = uPayUrl;
+			document.getElementById("usepayurl").textContent = uPayUrl;
+			location.href = uPayUrl;
 		};
 	</script>
 
 	<script>
 		document.getElementById("signM").onclick = async () => {
-		const sMessage = document.querySelector("#smessage").value;
-		const wallet = await Wallet.named("mazey");
-		wallet.cashaddr;
-		sign = (await wallet.sign(sMessage)).signature;
-		document.getElementById("signMessage").textContent = sign;
+			const sMessage = document.querySelector("#smessage").value;
+			const wallet = await Wallet.named("mazey");
+			wallet.cashaddr;
+			sign = (await wallet.sign(sMessage)).signature;
+			document.getElementById("signMessage").textContent = sign;
 		};
 		document.getElementById("verifyM").onclick = async () => {
-		const vAddress = document.querySelector("#vaddress").value;
-		const signatureHash = document.querySelector("#signH").value;
-		someWallet = await Wallet.watchOnly(vAddress);
-		verifyResult = await someWallet.verify(vAddress, signatureHash);
-		document.getElementById("verifyMessage").textContent = verifyResult.valid;
+			const vAddress = document.querySelector("#vaddress").value;
+			const signatureHash = document.querySelector("#signH").value;
+			someWallet = await Wallet.watchOnly(vAddress);
+			verifyResult = await someWallet.verify(vAddress, signatureHash);
+			document.getElementById("verifyMessage").textContent = verifyResult.valid;
 		};
 	</script>
 </body>
