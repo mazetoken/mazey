@@ -116,10 +116,8 @@
 		<div>
 			<button type="button" class="collapsible">View token details</button>
 			<div class="content">
-				<p>Paste tokenId (category).<p>
 				<p><input id="viewTokenId" type="text" size="50" placeholder="tokenId"></p>
-				<p>Use corresponding (View) buttons.</p>
-				<p><button type="button" id="viewTokens1">View - AuthChain</button> * wait a few seconds</p>
+				<p><button type="button" id="viewTokens1">View - AuthChain</button><br>* wait a few seconds</p>
 				<p><button type="button" id="viewTokens2">View - Paytaca Api</button></p>
 				<p>Choose metadata registry from the list.<br>
 					If custom BCMR is selected, paste url in the input field.</p>
@@ -366,9 +364,9 @@
 				transactionHash: viewTokenId,
 				followToHead: true
 			})
-			if (authChain[1]) {
+			if (authChain[0]) {
 			try {
-				await BCMR.addMetadataRegistryFromUri(authChain[1].httpsUrl);
+				await BCMR.addMetadataRegistryFromUri(authChain[0].httpsUrl);
 			} catch (error) { alert(error) }
 			}
 			const tokenInfo = BCMR.getTokenInfo(viewTokenId);

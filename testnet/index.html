@@ -118,10 +118,8 @@
 			<button type="button" class="collapsible">View token details</button>
 			<p>mainnet only</p>
 			<div class="content">
-				<p>Paste tokenId (category).<p>
 				<p><input id="viewTokenId" type="text" size="50" placeholder="tokenId"></p>
-				<p>Use corresponding (View) buttons.</p>
-				<p><button type="button" id="viewTokens1">View - AuthChain</button> * wait a few seconds</p>
+				<p><button type="button" id="viewTokens1">View - AuthChain</button><br>* wait a few seconds</p>
 				<p><button type="button" id="viewTokens2">View - Paytaca Api</button></p>
 				<p>Choose metadata registry from the list.<br>
 					If custom BCMR is selected, paste url in the input field.</p>
@@ -340,9 +338,9 @@
 			const pk = localStorage.getItem("twif");
 			var walletId2 = `wif:mainnet:${pk}`;
 			if (wallet = sd) {
-				var wallet = await Wallet.replaceNamed("tmazey", walletId1);
+				var wallet = await TestNetWallet.replaceNamed("tmazey", walletId1);
 			} else if (wallet = pk) {
-				var wallet = await Wallet.replaceNamed("tmazey", walletId2);
+				var wallet = await TestNetWallet.replaceNamed("tmazey", walletId2);
 			}
 			const bchAddress = await wallet.getDepositAddress();
 			const walletPubKey = wallet.getPublicKey(true);
@@ -382,9 +380,9 @@
 				transactionHash: viewTokenId,
 				followToHead: true
 			})
-			if (authChain[1]) {
+			if (authChain[0]) {
 			try {
-				await BCMR.addMetadataRegistryFromUri(authChain[1].httpsUrl);
+				await BCMR.addMetadataRegistryFromUri(authChain[0].httpsUrl);
 			} catch (error) { alert(error) }
 			}
 			const tokenInfo = BCMR.getTokenInfo(viewTokenId);
