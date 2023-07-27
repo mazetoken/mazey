@@ -3,8 +3,8 @@
 <head>
   	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-  	<title>Mazey wallet (testnet)</title>
-	<meta name="description" content="Mazey Bitcoin Cash CashTokens experimental wallet">
+  	<title>Mazey BCH wallet (testnet)</title>
+	<meta name="description" content="Mazey Bitcoin Cash CashTokens wallet powered by Microfi Free Flow">
   	<meta name="web" content="https://mazetoken.github.io/mazey/testnet/">
 	<style>
 		body {
@@ -60,16 +60,14 @@
 <body>
 	<div>
 		<h1>MAZEy</h1>
-		<h3>Bitcoin Cash <a href="https://cashtokens.org">CashTokens</a> experimental wallet</h3>
-		<h3>on testnet</h3>
+		<h3>Bitcoin Cash <a href="https://cashtokens.org">CashTokens</a> wallet</h3>
+		<p>Powered by <a href="https://microfi.eu">Microfi Free Flow</a></p>
 		<p>MAZEy can be used locally, on a pendrive, SD card, floppy disk, etc.<br>
 			Clear local storage if the wallet is being used on someone else's device or if you want to create a new wallet.
 		</p>
 		<p>The wallet also supports <a href="https://crc20.cash">CRC20</a> CashTokens. You can import the BCH wallet private key derived from your MetaMask account.</p>
-		<p>MAZEy wallet is under development. Viewing, sending and burning NFT CashTokens is not fully implemented.<br>
-			Use it at your own risk and with small amount of BCH.
-		</p>
-		<br>
+		<p>MAZEy wallet is under development. Use it at your own risk and with small amount of BCH.</p>
+		<p>Try MAZEy <a href="https://mazetoken.github.io/mazey/testnet/paperwallet">CashTokens paper wallet</a> (testnet).</p>
 		<hr>
 		<div>
 			<button type="button" class="collapsible">Create or import a wallet</button>
@@ -116,8 +114,8 @@
 		<hr>
 		<div>
 			<button type="button" class="collapsible">View token details</button>
-			<p>mainnet only</p>
 			<div class="content">
+				<p>mainnet only</p>
 				<p><input id="viewTokenId" type="text" size="50" placeholder="tokenId"></p>
 				<p><button type="button" id="viewTokens1">View - AuthChain</button><br>* wait a few seconds</p>
 				<p><button type="button" id="viewTokens2">View - Paytaca Api</button></p>
@@ -158,7 +156,7 @@
 		<div>
 			<button type="button" class="collapsible">Send fungible CashTokens</button>
 			<div class="content">
-				<p><input id="sendAddrToken" type="text" size="50" placeholder="bchtest:..."></p>
+				<p><input id="sendAddrToken" type="text" size="50" placeholder="bchtest:z..."></p>
 				<p><input id="sendAmountToken" type="text" size="50" placeholder="amount with decimals e.g. 10000 is 100 with 2 decimals"></p>
 				<p><input id="sendTokenId" type="text" size="50" placeholder="tokenId"></p>
 				<p><button type="button" id="sendTokens">Send tokens</button></p>
@@ -170,7 +168,7 @@
 		<div>
 			<button type="button" class="collapsible">Send NFT CashTokens</button>
 			<div class="content">
-				<p><input id="sendAddrToken1" type="text" size="50" placeholder="bchtest:..."></p>
+				<p><input id="sendAddrToken1" type="text" size="50" placeholder="bchtest:z..."></p>
 				<p><input id="sendNftTokenId" type="text" size="50" placeholder="tokenId"></p>
 				<p><input id="nftCommitment" type="text" size="50" placeholder="NFT commitment"></p>
 				<p><button type="button" id="sendNfts">Send NFTs</button></p>
@@ -195,7 +193,7 @@
 					<option value="NFTCapability.mutable">Mutable</option>
 				</select>
 				<p>* choose NFT capability from the list</p> -->
-				<p><button type="button" id="burnNft">Burn NFT</button></p>
+				<p><button type="button" id="burnNft">Burn immutable NFT</button></p>
 				<p id="burnNftTx"></p>
 				<!-- <img src id="imagetxid3" width="150"></p> -->
 			</div>
@@ -204,7 +202,7 @@
 		<div>
 			<button type="button" class="collapsible">CashTokens paper wallet</button>
 			<div class="content">
-				<p>Generate <a href="./paperwallet/">paper wallet</a></p>
+				<p>Generate <a href="./paperwallet/">paper wallet</a> or sweep paper wallet private key below.</p>
 				<p><input id="sweepPk" type="text" size="50" placeholder="Paste a paper wallet private key here"></p>
 				<p><button id="balancePw">Check paper wallet balance</button></p>
 				<p id="bchbalancePw"></p>
@@ -271,7 +269,7 @@
 		<br>
 		<footer>
 			<p><a href="https://github.com/mazetoken/mazey/">Github</a> | <a href="https://t.me/mazetokens/">Telegram</a></p>
-			<p>Powered by <br><a href="https://microfi.eu">Microfi Free Flow</a> CashTokens</p>
+			<!-- <p>Powered by <br><a href="https://microfi.eu">Microfi Free Flow</a> CashTokens</p> -->
 			<p>Check:<br>
 				<a href="https://mazetoken.github.io/darklabs/">Dark Labs</a> CRC20 CashTokens<br>
 				<a href="https://tapswap.cash/trade/4b53fb421e760fa3d6d1250b921a7833a6dad04e3566314164059aa0afd987d6">The Legendary Zombie Government</a> CashTokens NFTs
@@ -314,7 +312,6 @@
 
 		document.getElementById("create").onclick = async () => {
 			const wallet = await TestNetWallet.named("tmazey");
-			//const wallet = await Wallet.newRandom();
 			localStorage.setItem("tseed", wallet.mnemonic);
 			localStorage.setItem("twif", wallet.privateKeyWif);
 			alert("Done. You can open the wallet. Save the seed phrase and private key.");
@@ -375,14 +372,14 @@
 		}
 
 		document.getElementById("viewTokens1").onclick = async () => {
-			const viewTokenId = document.querySelector("#viewTokenId").value;
+			const viewTokenId1 = document.querySelector("#viewTokenId").value;
 			const authChain = await BCMR.buildAuthChain({
-				transactionHash: viewTokenId,
+				transactionHash: viewTokenId1,
 				followToHead: true
 			})
-			if (authChain[0]) {
+			if (authChain.at(-1)) {
 			try {
-				await BCMR.addMetadataRegistryFromUri(authChain[0].httpsUrl);
+				await BCMR.addMetadataRegistryFromUri(authChain.at(-1).httpsUrl);
 			} catch (error) { alert(error) }
 			}
 			const tokenInfo = BCMR.getTokenInfo(viewTokenId);
@@ -392,20 +389,20 @@
 			document.getElementById("tokendecimals").textContent = "Decimals: " + tokenInfo.token.decimals;
 			document.getElementById("tokendescription").textContent = "Description: " + tokenInfo.description;
 			document.getElementById("tokenicon").src = tokenInfo.uris.icon;
-			document.getElementById("explorer").textContent = "https://explorer.salemkode.com/token/" + viewTokenId;
+			document.getElementById("explorer").textContent = "https://explorer.salemkode.com/token/" + viewTokenId1;
 		};
 
 		document.getElementById("viewTokens2").onclick = async () => {
-			const viewTokenId = document.querySelector("#viewTokenId").value;
-			const apiUrl = "https://bcmr.paytaca.com/api/tokens/" + viewTokenId;
-			const explorer = "https://explorer.salemkode.com/token/" + viewTokenId;
+			const viewTokenId2 = document.querySelector("#viewTokenId").value;
+			const apiUrl = "https://bcmr.paytaca.com/api/tokens/" + viewTokenId2;
+			const explorer = "https://explorer.salemkode.com/token/" + viewTokenId2;
 			fetch(apiUrl)
 				.then(response => response.json())
-				.then(data => document.getElementById("tokenapi").textContent = "Name: " + data.name + " " + "| Symbol: " + data.token.symbol + " " + "| Decimals: " + data.token.decimals + " " + "| Description: " + data.description + " " + " " + "| Web: " + data.uris.web + " " + "| Icon: " + data.uris.icon + " " + explorer);
+				.then(data => document.getElementById("tokenapi").textContent = "Name: " + data.name + " " + "| Symbol: " + data.token.symbol + " " + "| Decimals: " + data.token.decimals + " " + "| Description: " + data.description + " " + " " + "| Web: " + data.uris.web + " " + "| Icon: " + data.uris.icon + " " + "| Explorer: " + explorer);
 		};
 
 		document.getElementById("viewTokens3").onclick = async () => {
-			const viewTokenId = document.querySelector("#viewTokenId").value;
+			const viewTokenId3 = document.querySelector("#viewTokenId").value;
 			const bcmrList = document.querySelector("#bcmrList").value;
 			if (bcmrUrl = bcmrList) {
 			try {
@@ -418,14 +415,14 @@
 				await BCMR.addMetadataRegistryFromUri(bcmrCustom);
 			} catch (error) { alert(error) }
 			}
-			const tokenInfo = BCMR.getTokenInfo(viewTokenId);
+			const tokenInfo = BCMR.getTokenInfo(viewTokenId3);
 			document.getElementById("tokencategory").textContent = "Category/tokenId: " + tokenInfo.token.category;
 			document.getElementById("tokenname").textContent = "Name: " + tokenInfo.name;
 			document.getElementById("tokensymbol").textContent = "Symbol: " + tokenInfo.token.symbol;
 			document.getElementById("tokendecimals").textContent = "Decimals: " + tokenInfo.token.decimals;
 			document.getElementById("tokendescription").textContent = "Description: " + tokenInfo.description;
 			document.getElementById("tokenicon").src = tokenInfo.uris.icon;
-			document.getElementById("explorer").textContent = "https://explorer.salemkode.com/token/" + viewTokenId;
+			document.getElementById("explorer").textContent = "https://explorer.salemkode.com/token/" + viewTokenId3;
 		};
 
 		document.getElementById("sendBCH").onclick = async () => {
@@ -633,7 +630,7 @@
 			try {
 			const opMessage = document.querySelector("#opmessage").value;
 			const wallet = await TestNetWallet.named("tmazey");
-			const cashtokensAddress = await wallet.getTokenDepositAddress();
+			//const cashtokensAddress = await wallet.getTokenDepositAddress();
 			const { txId } = await wallet.send([ OpReturnData.from(opMessage) ]);
 			//const { txId } = await wallet.send([
 			//OpReturnData.from("ORM" + opMessage),
