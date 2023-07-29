@@ -374,7 +374,17 @@
 			document.getElementById("tokensymbol").textContent = "Symbol: " + tokenInfo.token.symbol;
 			document.getElementById("tokendecimals").textContent = "Decimals: " + tokenInfo.token.decimals;
 			document.getElementById("tokendescription").textContent = "Description: " + tokenInfo.description;
-			document.getElementById("tokenicon").src = tokenInfo.uris.icon;
+
+			const viewIcon = tokenInfo.uris.icon;
+			const HttpsPrefix = "https://";
+			const IpfsPrefix = "ipfs://";
+			if (viewIcon.startsWith(HttpsPrefix)) {
+				document.getElementById("tokenicon").src = viewIcon;
+			} else if (viewIcon.startsWith(IpfsPrefix)) {
+				document.getElementById("tokenicon").src = "https://" + viewIcon.substr(7, viewIcon.length) + ".ipfs.dweb.link/";
+			}
+
+			//document.getElementById("tokenicon").src = tokenInfo.uris.icon;
 			document.getElementById("explorer").textContent = "https://explorer.salemkode.com/token/" + viewTokenId1;
 		};
 
@@ -407,7 +417,17 @@
 			document.getElementById("tokensymbol").textContent = "Symbol: " + tokenInfo.token.symbol;
 			document.getElementById("tokendecimals").textContent = "Decimals: " + tokenInfo.token.decimals;
 			document.getElementById("tokendescription").textContent = "Description: " + tokenInfo.description;
-			document.getElementById("tokenicon").src = tokenInfo.uris.icon;
+
+			const viewIcon = tokenInfo.uris.icon;
+			const HttpsPrefix = "https://";
+			const IpfsPrefix = "ipfs://";
+			if (viewIcon.startsWith(HttpsPrefix)) {
+				document.getElementById("tokenicon").src = viewIcon;
+			} else if (viewIcon.startsWith(IpfsPrefix)) {
+				document.getElementById("tokenicon").src = "https://" + viewIcon.substr(7, viewIcon.length) + ".ipfs.dweb.link/";
+			}
+
+			//document.getElementById("tokenicon").src = tokenInfo.uris.icon;
 			document.getElementById("explorer").textContent = "https://explorer.salemkode.com/token/" + viewTokenId3;
 		};
 
