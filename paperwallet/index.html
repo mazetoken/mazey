@@ -41,7 +41,7 @@
 		<h1>MAZEy</h1>
 		<h3>Bitcoin Cash <a href="https://cashtokens.org">CashTokens</a> paper wallet</h3>
 		<p><button type="button" id="createPW">Generate CashTokens paper wallet</button></p>
-		<p>Send min 1400 BCH satoshis and only one category of CashTokens to a paper wallet and share the private key of the paper wallet with someone.<br>
+		<p>Send min 1400 BCH satoshis and only one category of CashTokens to a paper wallet and share the private key of the paper wallet with someone (e.g. as a gift).<br>
 			The private key of the paper wallet can be swept in the <a href="https://mazetoken.github.io/mazey/">Mazey</a> wallet (https://mazetoken.github.io/mazey/).</p>
 		<hr>
 		<div>
@@ -82,8 +82,6 @@
 			document.getElementById("qr2").contents = tokenAddress;
 			document.getElementById("privatekey1").textContent ="Private key: " + wallet.privateKeyWif;
 			document.getElementById("qr3").contents = wallet.privateKeyWif;
-			//document.getElementById("mnemonic1").textContent = "Seed phrase: " + wallet.mnemonic;
-			//document.getElementById("derivation1").textContent = "Derivation path: " + wallet.derivationPath;
 		};
 	});
 	</script>

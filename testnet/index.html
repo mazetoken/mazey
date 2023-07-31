@@ -68,7 +68,7 @@
 		</p>
 		<p>The wallet also supports <a href="https://crc20.cash">CRC20</a> CashTokens. You can import the BCH wallet private key derived from your MetaMask account.</p>
 		<p>MAZEy wallet is under development. Use it at your own risk and with small amount of BCH.</p>
-		<p>Try MAZEy <a href="https://mazetoken.github.io/mazey/testnet/paperwallet">CashTokens paper wallet</a> (testnet).</p>
+		<h3>Try MAZEy <a href="https://mazetoken.github.io/mazey/testnet/paperwallet">CashTokens paper wallet</a> (testnet).</h3>
 		<hr>
 		<div>
 			<button type="button" class="collapsible">Create or import a wallet</button>
@@ -113,7 +113,7 @@
 			</div>
 		</div>
 		<hr>
-		<div>
+		<!-- <div>
 			<button type="button" class="collapsible">View token details</button>
 			<div class="content">
 				<p>mainnet only</p>
@@ -141,7 +141,7 @@
 				<p id="tokenapi"></p>
 			</div>
 		</div>
-		<hr>
+		<hr> -->
 		<div>
 			<button type="button" class="collapsible">Send BCH</button>
 			<div class="content">
@@ -201,14 +201,15 @@
 		</div>
 		<hr>
 		<div>
-			<button type="button" class="collapsible">CashTokens paper wallet</button>
+			<button type="button" class="collapsible">Sweep paper wallet</button>
 			<div class="content">
-				<p>Generate <a href="./paperwallet/">paper wallet</a> or sweep paper wallet private key below.</p>
-				<p><input id="sweepPk" type="text" size="50" placeholder="Paste a paper wallet private key here"></p>
+				<p>Before sweeping, check the balance of the paper wallet.<br> 
+					You can create a Mazey wallet or import an existing wallet into Mazey and paste the BCH address into the recipient field, or simply use your favorite BCH wallet address (which supports CashTokens) in the recipient field.
+				</p>
+				<p><input id="sweepPk" type="text" size="50" placeholder="Paste a paper wallet private key (WIF) here"></p>
 				<p><button id="balancePw">Check paper wallet balance</button></p>
 				<p id="bchbalancePw"></p>
 				<p id="tokenbalancePw"></p>
-				<p>Before sweeping, you can create a Mazey wallet or import an existing wallet into Mazey and paste the BCH address into the recipient field, or simply use your favorite BCH wallet address (which supports CashTokens) in the recipient field.</p>
 				<p><input id="recipientAddress" type="text" size="50" placeholder="recipient address bchtest:..."></p>
 				<p><button id="sweepPw">Sweep tokens and BCH</button> * if paper the wallet has tokens and BCH</p>
 				<p><button id="sweepPwBch">Sweep BCH</button> * if the paper wallet has only BCH</p>
@@ -389,7 +390,17 @@
 			document.getElementById("tokensymbol").textContent = "Symbol: " + tokenInfo.token.symbol;
 			document.getElementById("tokendecimals").textContent = "Decimals: " + tokenInfo.token.decimals;
 			document.getElementById("tokendescription").textContent = "Description: " + tokenInfo.description;
-			document.getElementById("tokenicon").src = tokenInfo.uris.icon;
+
+			const viewIcon = tokenInfo.uris.icon;
+			const HttpsPrefix = "https://";
+			const IpfsPrefix = "ipfs://";
+			if (viewIcon.startsWith(HttpsPrefix)) {
+				document.getElementById("tokenicon").src = viewIcon;
+			} else if (viewIcon.startsWith(IpfsPrefix)) {
+				document.getElementById("tokenicon").src = "https://" + viewIcon.substr(7, viewIcon.length) + ".ipfs.dweb.link/";
+			}
+
+			//document.getElementById("tokenicon").src = tokenInfo.uris.icon;
 			document.getElementById("explorer").textContent = "https://explorer.salemkode.com/token/" + viewTokenId1;
 		};
 
