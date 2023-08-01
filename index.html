@@ -382,7 +382,7 @@
 			if (viewIcon.startsWith(HttpsPrefix)) {
 				document.getElementById("tokenicon").src = viewIcon;
 			} else if (viewIcon.startsWith(IpfsPrefix)) {
-				document.getElementById("tokenicon").src = "https://" + viewIcon.substr(7, viewIcon.length) + ".ipfs.dweb.link/";
+				document.getElementById("tokenicon").src = "https://dweb.link/ipfs/" + viewIcon.substr(7, viewIcon.length);
 			}
 
 			//document.getElementById("tokenicon").src = tokenInfo.uris.icon;
