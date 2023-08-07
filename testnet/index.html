@@ -55,7 +55,7 @@
 		@media screen and (max-width: 512px) {
 		}
 	</style>
-	<script defer src="https://cdn.jsdelivr.net/npm/mainnet-js@1.1.31/dist/mainnet-1.1.31.js" integrity="sha256-rmOpIf/WGsAIIHtE8D7zTWOhHKo/ZMW730ROMPLWZCI=" crossorigin="anonymous"></script>
+	<script defer src="https://cdn.jsdelivr.net/npm/mainnet-js@1.1.32/dist/mainnet-1.1.32.js" integrity="sha256-CJtSR1gvDa7duJaqhk0nwnUJHuuQ4ay0Is7nbL8XHao=" crossorigin="anonymous"></script>
 </head>
 <body>
 	<div>
@@ -333,9 +333,9 @@
 			var wallet = await TestNetWallet.named("tmazey");
 			const sd = localStorage.getItem("tseed");
 			const derivationPath = "m/44'/145'/0'/0/0";
-			var walletId1 = `seed:mainnet:${sd}:${derivationPath}`;
+			var walletId1 = `seed:testnet:${sd}:${derivationPath}`;
 			const pk = localStorage.getItem("twif");
-			var walletId2 = `wif:mainnet:${pk}`;
+			var walletId2 = `wif:testnet:${pk}`;
 			if (wallet = sd) {
 				var wallet = await TestNetWallet.replaceNamed("tmazey", walletId1);
 			} else if (wallet = pk) {
