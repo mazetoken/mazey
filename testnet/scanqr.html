@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js" integrity="sha256-ZgsSQ3sddH4+aLi+BoXAjLcoFAEQrSE/FnsUtm+LHY4=" crossorigin="anonymous"></script>
+    </head>
+
+    <body>
+        <div id="qr-reader"></div>
+
+        <script>
+            function onScanSuccess(decodedText, decodedResult) {
+                console.log(`Code scanned = ${decodedText}`, decodedResult);
+            }
+            var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox : { width: 250, height: 250 } });
+            html5QrcodeScanner.render(onScanSuccess);
+        </script>
+    </body>
+</html>
