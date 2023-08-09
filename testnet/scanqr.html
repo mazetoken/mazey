@@ -9,13 +9,27 @@
 
     <body>
         <div id="qr-reader"></div>
+        <p id="scanresult"></p>
+        <button type="button" style="background: none; padding: 0;" onclick="copyTextContent('scanresult')">
+            <img class="copyIcon icon" alt="copybutton" src="data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIGNsYXNzPSJoYXMtc29saWQgIiB2aWV3Qm94PSIwIDAgMzYgMzYiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIG1lZXQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIGZvY3VzYWJsZT0iZmFsc2UiIHJvbGU9ImltZyIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiBmaWxsPSJjdXJyZW50Q29sb3IiPjxwYXRoIGQ9Ik0yOS41LDdoLTE5QTEuNSwxLjUsMCwwLDAsOSw4LjV2MjRBMS41LDEuNSwwLDAsMCwxMC41LDM0aDE5QTEuNSwxLjUsMCwwLDAsMzEsMzIuNVY4LjVBMS41LDEuNSwwLDAsMCwyOS41LDdaTTI5LDMySDExVjlIMjlaIiBjbGFzcz0iY2xyLWktb3V0bGluZSBjbHItaS1vdXRsaW5lLXBhdGgtMSIvPjxwYXRoIGQ9Ik0yNiwzLjVBMS41LDEuNSwwLDAsMCwyNC41LDJINS41QTEuNSwxLjUsMCwwLDAsNCwzLjV2MjRBMS41LDEuNSwwLDAsMCw1LjUsMjlINlY0SDI2WiIgY2xhc3M9ImNsci1pLW91dGxpbmUgY2xyLWktb3V0bGluZS1wYXRoLTIiLz48cGF0aCBkPSJNMjcsMy41NkExLjU2LDEuNTYsMCwwLDAsMjUuNDMsMkg1LjU3QTEuNTYsMS41NiwwLDAsMCw0LDMuNTZWMjguNDRBMS41NiwxLjU2LDAsMCwwLDUuNTcsMzBoLjUyVjQuMDdIMjdaIiBjbGFzcz0iY2xyLWktc29saWQgY2xyLWktc29saWQtcGF0aC0xIiBzdHlsZT0iZGlzcGxheTpub25lIi8+PHJlY3QgeD0iOCIgeT0iNiIgd2lkdGg9IjIzIiBoZWlnaHQ9IjI4IiByeD0iMS41IiByeT0iMS41IiBjbGFzcz0iY2xyLWktc29saWQgY2xyLWktc29saWQtcGF0aC0yIiBzdHlsZT0iZGlzcGxheTpub25lIi8+PC9zdmc+" />
+        </button>
 
         <script>
             function onScanSuccess(decodedText, decodedResult) {
                 console.log(`Code scanned = ${decodedText}`, decodedResult);
+                try {
+                    document.getElementById("scanresult").textContent = decodedResult;
+                } catch (error) { alert(error) }
             }
             var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox : { width: 250, height: 250 } });
             html5QrcodeScanner.render(onScanSuccess);
+        </script>
+
+        <script>
+            window.copyTextContent = function copyTextContent(id) {
+                var element = document.getElementById(id);
+                navigator.clipboard.writeText(element.textContent);
+            }
         </script>
     </body>
 </html>
