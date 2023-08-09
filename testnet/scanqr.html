@@ -18,10 +18,10 @@
             function onScanSuccess(decodedText, decodedResult) {
                 console.log(`Code scanned = ${decodedText}`, decodedResult);
                 try {
-                    document.getElementById("scanresult").textContent = decodedResult;
+                    document.getElementById("scanresult").textContent = `Code scanned = ${decodedText}`, decodedResult;
                 } catch (error) { alert(error) }
             }
-            var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox : { width: 250, height: 250 } });
+            var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 32, qrbox : { width: 250, height: 250 } });
             html5QrcodeScanner.render(onScanSuccess);
         </script>
 
