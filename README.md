@@ -1,12 +1,18 @@
 # MAZEy
 
+MAZEy is rebranded to Microfi https://microfi.eu/wallet/
+
+This repo will be active untill August 31, 2023
+
+---
+
 Bitcoin Cash CashTokens wallet (under development)
 
 Download index.html and use it locally, on a pendrive, SD card or floppy disk ;-)
 
 or check https://mazetoken.github.io/mazey/
 
-index.html SHA256: 0F7F955609602CAE161AD9C27629C508AE2429B2A5FB464303C0DE867A6B2598
+index.html SHA256: B962727115E10E1FC9B8B9ECAD5ACA8ABAF973E86D23542C8BE21BF002BD30D2
 
 testnet https://mazetoken.github.io/mazey/testnet/
 
@@ -16,6 +22,6 @@ Check MAZEy Bitcoin Cash CashTokens paper wallet
 
 https://mazetoken.github.io/mazey/paperwallet/
 
-paper wallet index.html SHA256: 4475B2A6C0223E756CB9A075F85EFAD598DB4637B13F26DCFDA67E3832A47713
+paper wallet index.html SHA256: 096BFFC5634A793BB470176E975E4071066D127D3D45FB971B2762946528A081
 
 https://mazetoken.github.io/mazey/testnet/paperwallet/
