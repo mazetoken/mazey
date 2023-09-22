@@ -1,3 +1,3 @@
 # MAZEy
 
-MAZEy is rebranded. It is now Microfi https://microfi.eu/wallet/
+MAZEy has been rebranded to Microfi https://microfi.eu/wallet/
